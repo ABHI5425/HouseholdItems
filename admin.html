@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toparapu Household</title>
+    
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    
+    <!-- Alpine.js -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.10.3/dist/cdn.min.js" defer></script>
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css">
+    
+    <!-- Animation library -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css">
+    
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FF9800;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #e67e00;
+        }
+        
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Category tabs */
+        .category-tab {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .category-tab.active {
+            border-bottom: 2px solid #FF9800;
+            color: #FF9800;
+            font-weight: bold;
+        }
+        
+        /* Product card hover effect */
+        .product-card {
+            transition: all 0.3s ease;
+            transform: translateY(0);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Button effects */
+        .btn-add {
+            transition: all 0.3s ease;
+            background-color: #FF9800;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-add:hover {
+            background-color: #F57C00;
+        }
+        
+        .btn-add:active {
+            transform: scale(0.95);
+        }
+        
+        .btn-add::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        .btn-add:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(20, 20);
+                opacity: 0;
+            }
+        }
+        
+        /* Cart badge */
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #FF5722;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        /* Search bar animation */
+        .search-container {
+            transition: all 0.3s ease;
+        }
+        
+        .search-expanded {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            background: white;
+            padding: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Checkmark animation */
+        .checkmark {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 4;
+            stroke: #ffffff;
+            stroke-miterlimit: 10;
+            box-shadow: inset 0px 0px 0px #7ac142;
+            animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+            visibility: hidden;
+            margin-left: 10px;
+        }
+        
+        .checkmark-circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 2;
+            stroke-miterlimit: 10;
+            stroke: #7ac142;
+            fill: none;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+        
+        .checkmark-check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+        }
+        
+        @keyframes stroke {
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+        
+        @keyframes scale {
+            0%, 100% {
+                transform: none;
+            }
+            50% {
+                transform: scale3d(1.1, 1.1, 1);
+            }
+        }
+        
+        @keyframes fill {
+            100% {
+                box-shadow: inset 0px 0px 0px 30px #7ac142;
+            }
+        }
+        
+        .show-checkmark {
+            visibility: visible;
+        }
+        
+        /* Quantity selector */
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+        }
+        
+        .quantity-input {
+            width: 60px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 0 5px;
+            padding: 2px 5px;
+        }
+        
+        .quantity-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background-color: #f1f1f1;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+        
+        .quantity-btn:hover {
+            background-color: #ddd;
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 120px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -60px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        /* Mobile optimization */
+        @media (max-width: 768px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 500px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .category-tabs {
+                overflow-x: auto;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+                scroll-padding: 0 20px;
+                scroll-snap-type: x mandatory;
+            }
+            
+            .category-tab {
+                scroll-snap-align: start;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen" x-data="storeApp()" x-init="ensureHomePage()">
+    <!-- Notification -->
+    <div 
+        x-show="notification.show" 
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 transform translate-y-2"
+        x-transition:enter-end="opacity-100 transform translate-y-0"
+        x-transition:leave="transition ease-in duration-300"
+        x-transition:leave-start="opacity-100 transform translate-y-0"
+        x-transition:leave-end="opacity-0 transform translate-y-2"
+        @click="notification.show = false"
+        class="fixed bottom-4 right-4 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-lg z-50 flex items-center"
+    >
+        <span x-text="notification.message"></span>
+        <button class="ml-4 text-gray-300 hover:text-white">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <!-- Password Modal -->
+    <div 
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+        x-show="showPasswordModal"
+        x-cloak
+    >
+        <div class="bg-white rounded-lg p-6 w-full max-w-md">
+            <h2 class="text-xl font-bold mb-4 text-gray-800">Admin Access</h2>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <input 
+                        type="password" 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-300"
+                        x-model="adminPassword"
+                        @keyup.enter="verifyPassword"
+                        placeholder="Enter admin password"
+                    >
+                </div>
+                <div x-show="passwordError" class="text-red-500 text-sm">
+                    Incorrect password. Please try again.
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end space-x-3">
+                <button 
+                    @click="showPasswordModal = false; adminPassword = ''; passwordError = false;"
+                    class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-md transition"
+                >
+                    Cancel
+                </button>
+                <button 
+                    @click="verifyPassword"
+                    class="bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-4 rounded-md transition"
+                >
+                    Submit
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div class="flex flex-col min-h-screen">
+        <!-- Header -->
+        <header class="bg-white shadow-md sticky top-0 z-40">
+            <div class="container mx-auto px-4 py-3 flex justify-between items-center relative">
+                <!-- Logo -->
+                <a href="#" @click="activePage = 'home'; activeCategory = 'Vegetables'" class="font-bold text-xl text-gray-800 hover:text-orange-500 transition">
+                    Toparapu Household
+                </a>
+                
+                <!-- Search Bar -->
+                <div 
+                    x-show="activePage !== 'admin'"
+                    :class="{'search-container': true, 'search-expanded': isSearchExpanded, 'w-1/3': !isSearchExpanded, 'w-full': isSearchExpanded && window.innerWidth < 768}"
+                    @click.away="isSearchExpanded = false; searchResults = []"
+                >
+                    <div class="relative">
+                        <input 
+                            type="text" 
+                            placeholder="Search items..." 
+                            class="w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-transparent transition"
+                            x-model="searchQuery"
+                            @focus="isSearchExpanded = true"
+                            @input="searchProducts"
+                        >
+                        <button class="absolute right-3 top-2 text-gray-500">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        
+                        <!-- Search Results -->
+                        <div 
+                            x-show="searchResults.length > 0 && isSearchExpanded" 
+                            class="absolute left-0 right-0 mt-2 bg-white rounded-lg shadow-lg overflow-hidden z-50 max-h-80 overflow-y-auto"
+                        >
+                            <div class="p-2">
+                                <template x-for="product in searchResults" :key="product.id">
+                                    <div 
+                                        @click="addToBasket(product); isSearchExpanded = false; searchQuery = ''; searchResults = []"
+                                        class="p-2 hover:bg-orange-50 rounded cursor-pointer flex justify-between items-center transition"
+                                    >
+                                        <div>
+                                            <span x-text="product.name" class="font-medium"></span>
+                                            <span class="text-sm text-gray-500 ml-2" x-text="product.category"></span>
+                                        </div>
+                                        <div class="text-orange-500 font-medium">
+                                            Add <i class="fas fa-plus ml-1"></i>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Navigation -->
+                <div class="flex items-center space-x-4">
+                    <template x-if="activePage !== 'admin'">
+                        <button 
+                            @click="showPasswordModal = true"
+                            class="text-gray-600 hover:text-orange-500 transition font-medium"
+                        >
+                            Admin
+                        </button>
+                    </template>
+                    
+                    <template x-if="activePage === 'admin'">
+                        <button 
+                            @click="activePage = 'home'; activeCategory = 'Vegetables'"
+                            class="text-gray-600 hover:text-orange-500 transition font-medium"
+                        >
+                            Home
+                        </button>
+                    </template>
+                    
+                    <div class="relative">
+                        <button 
+                            @click="activePage = activePage === 'cart' ? 'home' : 'cart'"
+                            class="p-2 text-gray-600 hover:text-orange-500 transition relative"
+                        >
+                            <i class="fas fa-shopping-cart text-xl"></i>
+                            <span 
+                                x-show="getTotalItems() > 0"
+                                x-text="getTotalItems()"
+                                class="cart-badge animate__animated animate__bounceIn"
+                            ></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-grow container mx-auto px-4 py-6">
+            <!-- Home Page -->
+            <div x-show="activePage === 'home'" class="fade-in">
+                <!-- Category Tabs -->
+                <div class="category-tabs flex space-x-1 overflow-x-auto pb-2 mb-6 bg-white shadow-sm rounded-lg p-2">
+                    <template x-for="category in categories" :key="category">
+                        <button 
+                            @click="activeCategory = category"
+                            :class="{'category-tab px-4 py-2 rounded-md transition': true, 'active': activeCategory === category}"
+                            x-text="category"
+                        ></button>
+                    </template>
+                </div>
+                
+                <!-- Products Grid -->
+                <div 
+                    x-show="activeCategory" 
+                    class="product-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+                >
+                    <template x-for="product in filteredProducts" :key="product.id">
+                        <div class="product-card bg-white rounded-lg overflow-hidden shadow-md">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2" x-text="product.name"></h3>
+                                
+                                <div class="flex justify-between items-center mb-4">
+                                    <div class="quantity-selector">
+                                        <span 
+                                            @click="decrementQuantity(product)"
+                                            class="quantity-btn"
+                                        >-</span>
+                                        <input 
+                                            type="number" 
+                                            class="quantity-input"
+                                            x-model.number="product.quantity"
+                                            min="0.1"
+                                            step="0.1"
+                                        >
+                                        <span 
+                                            @click="incrementQuantity(product)"
+                                            class="quantity-btn"
+                                        >+</span>
+                                    </div>
+                                    
+                                    <select 
+                                        x-model="product.unit"
+                                        class="border border-gray-300 rounded px-2 py-1 text-sm bg-white"
+                                    >
+                                        <option value="kg">kg</option>
+                                        <option value="ltr">ltr</option>
+                                        <option value="pcs">pcs</option>
+                                        <option value="g">g</option>
+                                        <option value="ml">ml</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="flex items-center">
+                                    <button 
+                                        @click="addToBasket(product)"
+                                        class="btn-add text-white font-medium py-2 px-4 rounded-md w-full focus:outline-none flex justify-center items-center"
+                                    >
+                                        <span>Add to Basket</span>
+                                        <svg class="checkmark" x-ref="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                            <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none" />
+                                            <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+            
+            <!-- Cart Page -->
+            <div x-show="activePage === 'cart'" class="fade-in">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold mb-6 text-gray-800">Your Basket</h2>
+                    
+                    <template x-if="basket.length === 0">
+                        <div class="text-center py-8">
+                            <i class="fas fa-shopping-basket text-gray-300 text-5xl mb-4"></i>
+                            <p class="text-gray-500 text-lg">Your basket is empty</p>
+                            <button 
+                                @click="activePage = 'home'"
+                                class="mt-4 bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-6 rounded-md transition"
+                            >
+                                Continue Shopping
+                            </button>
+                        </div>
+                    </template>
+                    
+                    <template x-if="basket.length > 0">
+                        <div>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <template x-for="(item, index) in basket" :key="index">
+                                            <tr>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div class="font-medium text-gray-900" x-text="item.name"></div>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-500" x-text="item.category"></div>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div class="quantity-selector">
+                                                        <span 
+                                                            @click="decrementBasketItem(index)"
+                                                            class="quantity-btn"
+                                                        >-</span>
+                                                        <input 
+                                                            type="number" 
+                                                            class="quantity-input"
+                                                            x-model.number="item.quantity"
+                                                            min="0.1"
+                                                            step="0.1"
+                                                            @change="updateBasket()"
+                                                        >
+                                                        <span 
+                                                            @click="incrementBasketItem(index)"
+                                                            class="quantity-btn"
+                                                        >+</span>
+                                                        <span class="ml-2" x-text="item.unit"></span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                    <button 
+                                                        @click="removeFromBasket(index)"
+                                                        class="text-red-500 hover:text-red-700 transition"
+                                                    >
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="mt-6 flex justify-between items-center">
+                                <button 
+                                    @click="activePage = 'home'"
+                                    class="text-orange-500 hover:text-orange-700 font-medium transition"
+                                >
+                                    <i class="fas fa-arrow-left mr-2"></i> Continue Shopping
+                                </button>
+                                
+                                <div>
+                                    <button 
+                                        @click="clearBasket()"
+                                        class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-md transition mr-2"
+                                    >
+                                        Clear Basket
+                                    </button>
+                                    
+                                    <button 
+                                        @click="copyToClipboard()"
+                                        class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-md transition"
+                                    >
+                                        Copy to Clipboard
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+            
+            <!-- Admin Page -->
+            <div x-show="activePage === 'admin'" class="fade-in">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold mb-6 text-gray-800">Admin Panel</h2>
+                    
+                    <div class="mb-8">
+                        <h3 class="text-lg font-semibold mb-4 text-gray-700">Add New Item</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Item Name</label>
+                                <input 
+                                    type="text" 
+                                    x-model="newItem.name" 
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-300"
+                                    placeholder="Enter item name"
+                                >
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                                <select 
+                                    x-model="newItem.category"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-300"
+                                >
+                                    <template x-for="category in categories" :key="category">
+                                        <option :value="category" x-text="category"></option>
+                                    </template>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Default Quantity</label>
+                                <input 
+                                    type="number" 
+                                    x-model.number="newItem.quantity"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-300"
+                                    min="0.1"
+                                    step="0.1"
+                                >
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Default Unit</label>
+                                <select 
+                                    x-model="newItem.unit"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-300"
+                                >
+                                    <option value="kg">kg</option>
+                                    <option value="ltr">ltr</option>
+                                    <option value="pcs">pcs</option>
+                                    <option value="g">g</option>
+                                    <option value="ml">ml</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <button 
+                            @click="addNewItem()"
+                            class="mt-4 btn-add text-white font-medium py-2 px-4 rounded-md transition"
+                            :disabled="!newItem.name"
+                            :class="{'opacity-50 cursor-not-allowed': !newItem.name}"
+                        >
+                            Add Item
+                            <svg class="checkmark" x-ref="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none" />
+                                <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4 text-gray-700">Manage Items</h3>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Filter by Category</label>
+                            <select 
+                                x-model="adminFilter"
+                                class="w-full md:w-1/3 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-300"
+                            >
+                                <option value="all">All Categories</option>
+                                <template x-for="category in categories" :key="category">
+                                    <option :value="category" x-text="category"></option>
+                                </template>
+                            </select>
+                        </div>
+                        
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Unit</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <template x-for="(product, index) in filteredAdminProducts" :key="product.id">
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <template x-if="editingItem && editingItem.id === product.id">
+                                                    <input 
+                                                        type="text" 
+                                                        x-model="editingItem.name" 
+                                                        class="w-full px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-300"
+                                                    >
+                                                </template>
+                                                <template x-if="!editingItem || editingItem.id !== product.id">
+                                                    <div class="font-medium text-gray-900" x-text="product.name"></div>
+                                                </template>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <template x-if="editingItem && editingItem.id === product.id">
+                                                    <select 
+                                                        x-model="editingItem.category"
+                                                        class="w-full px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-300"
+                                                    >
+                                                        <template x-for="category in categories" :key="category">
+                                                            <option :value="category" x-text="category"></option>
+                                                        </template>
+                                                    </select>
+                                                </template>
+                                                <template x-if="!editingItem || editingItem.id !== product.id">
+                                                    <div class="text-sm text-gray-500" x-text="product.category"></div>
+                                                </template>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <template x-if="editingItem && editingItem.id === product.id">
+                                                    <input 
+                                                        type="number" 
+                                                        x-model.number="editingItem.quantity"
+                                                        class="w-full px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-300"
+                                                        min="0.1"
+                                                        step="0.1"
+                                                    >
+                                                </template>
+                                                <template x-if="!editingItem || editingItem.id !== product.id">
+                                                    <div class="text-sm text-gray-500" x-text="product.quantity"></div>
+                                                </template>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <template x-if="editingItem && editingItem.id === product.id">
+                                                    <select 
+                                                        x-model="editingItem.unit"
+                                                        class="w-full px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-300"
+                                                    >
+                                                        <option value="kg">kg</option>
+                                                        <option value="ltr">ltr</option>
+                                                        <option value="pcs">pcs</option>
+                                                        <option value="g">g</option>
+                                                        <option value="ml">ml</option>
+                                                    </select>
+                                                </template>
+                                                <template x-if="!editingItem || editingItem.id !== product.id">
+                                                    <div class="text-sm text-gray-500" x-text="product.unit"></div>
+                                                </template>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <template x-if="editingItem && editingItem.id === product.id">
+                                                    <div class="flex space-x-2">
+                                                        <button 
+                                                            @click="saveEditItem(product.id)"
+                                                            class="text-green-500 hover:text-green-700 transition"
+                                                            title="Save"
+                                                        >
+                                                            <i class="fas fa-check"></i>
+                                                        </button>
+                                                        <button 
+                                                            @click="cancelEdit()"
+                                                            class="text-gray-500 hover:text-gray-700 transition"
+                                                            title="Cancel"
+                                                        >
+                                                            <i class="fas fa-times"></i>
+                                                        </button>
+                                                    </div>
+                                                </template>
+                                                <template x-if="!editingItem || editingItem.id !== product.id">
+                                                    <div class="flex space-x-3">
+                                                        <button 
+                                                            @click="editItem(product)"
+                                                            class="text-blue-500 hover:text-blue-700 transition"
+                                                            title="Edit"
+                                                        >
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                        <button 
+                                                            @click="deleteItem(index)"
+                                                            class="text-red-500 hover:text-red-700 transition"
+                                                            title="Delete"
+                                                        >
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </template>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-white py-4 mt-auto">
+            <div class="container mx-auto px-4 text-center">
+                <p>© 2025 Hyderabad Household Store. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function storeApp() {
+            return {
+                // App state
+                activePage: 'home',
+                activeCategory: 'Vegetables',
+                searchQuery: '',
+                searchResults: [],
+                isSearchExpanded: false,
+                adminFilter: 'all',
+                editingItem: null,
+                showPasswordModal: false,
+                adminPassword: '',
+                passwordError: false,
+                notification: {
+                    show: false,
+                    message: ''
+                },
+                
+                // Data
+                categories: [
+                    'Vegetables',
+                    'Green Leafy Vegetables',
+                    'Fruits',
+                    'Flours',
+                    'Cereals',
+                    'Dals',
+                    'Household Essentials'
+                ],
+                
+                products: getInitialProducts(),
+                basket: getBasketFromStorage(),
+                
+                newItem: {
+                    name: '',
+                    category: 'Vegetables',
+                    quantity: 0.5,
+                    unit: 'kg'
+                },
+                
+                // Computed properties
+                get filteredProducts() {
+                    return this.products.filter(p => p.category === this.activeCategory);
+                },
+                
+                get filteredAdminProducts() {
+                    if (this.adminFilter === 'all') {
+                        return this.products;
+                    } else {
+                        return this.products.filter(p => p.category === this.adminFilter);
+                    }
+                },
+                
+                // Methods
+                ensureHomePage() {
+                    this.activePage = 'home';
+                    this.showPasswordModal = false;
+                },
+                
+                getTotalItems() {
+                    return this.basket.length;
+                },
+                
+                searchProducts() {
+                    if (!this.searchQuery.trim()) {
+                        this.searchResults = [];
+                        return;
+                    }
+                    
+                    const query = this.searchQuery.toLowerCase();
+                    this.searchResults = this.products.filter(product => 
+                        product.name.toLowerCase().includes(query)
+                    ).slice(0, 10);
+                },
+                
+                incrementQuantity(product) {
+                    product.quantity = Math.round((parseFloat(product.quantity) + 0.1) * 10) / 10;
+                },
+                
+                decrementQuantity(product) {
+                    if (product.quantity > 0.1) {
+                        product.quantity = Math.round((parseFloat(product.quantity) - 0.1) * 10) / 10;
+                    }
+                },
+                
+                addToBasket(product) {
+                    const itemToAdd = {
+                        id: product.id,
+                        name: product.name,
+                        category: product.category,
+                        quantity: product.quantity,
+                        unit: product.unit
+                    };
+                    
+                    const existingItemIndex = this.basket.findIndex(item => item.id === itemToAdd.id);
+                    
+                    if (existingItemIndex !== -1) {
+                        this.basket[existingItemIndex].quantity = 
+                            Math.round((parseFloat(this.basket[existingItemIndex].quantity) + parseFloat(itemToAdd.quantity)) * 10) / 10;
+                    } else {
+                        this.basket.push(itemToAdd);
+                    }
+                    
+                    this.updateBasket();
+                    this.showCheckmark(product);
+                    this.showNotification(`${product.name} added to basket`);
+                },
+                
+                showCheckmark(product) {
+                    const productElements = document.querySelectorAll(`.product-card`);
+                    productElements.forEach(el => {
+                        const nameEl = el.querySelector('h3');
+                        if (nameEl && nameEl.textContent === product.name) {
+                            const checkmark = el.querySelector('.checkmark');
+                            if (checkmark) {
+                                checkmark.classList.add('show-checkmark');
+                                setTimeout(() => {
+                                    checkmark.classList.remove('show-checkmark');
+                                }, 2000);
+                            }
+                        }
+                    });
+                },
+                
+                removeFromBasket(index) {
+                    this.basket.splice(index, 1);
+                    this.updateBasket();
+                    this.showNotification('Item removed from basket');
+                },
+                
+                clearBasket() {
+                    this.basket = [];
+                    this.updateBasket();
+                    this.showNotification('Basket cleared');
+                },
+                
+                incrementBasketItem(index) {
+                    this.basket[index].quantity = Math.round((parseFloat(this.basket[index].quantity) + 0.1) * 10) / 10;
+                    this.updateBasket();
+                },
+                
+                decrementBasketItem(index) {
+                    if (this.basket[index].quantity > 0.1) {
+                        this.basket[index].quantity = Math.round((parseFloat(this.basket[index].quantity) - 0.1) * 10) / 10;
+                        this.updateBasket();
+                    }
+                },
+                
+                updateBasket() {
+                    localStorage.setItem('basket', JSON.stringify(this.basket));
+                },
+                
+                verifyPassword() {
+                    const correctPassword = 'abhi123';
+                    if (this.adminPassword === correctPassword) {
+                        this.activePage = 'admin';
+                        this.showPasswordModal = false;
+                        this.adminPassword = '';
+                        this.passwordError = false;
+                    } else {
+                        this.passwordError = true;
+                        this.adminPassword = '';
+                    }
+                },
+                
+                addNewItem() {
+                    if (!this.newItem.name.trim()) {
+                        this.showNotification('Please enter an item name');
+                        return;
+                    }
+                    
+                    const newProduct = {
+                        id: Date.now().toString(),
+                        name: this.newItem.name.trim(),
+                        category: this.newItem.category,
+                        quantity: this.newItem.quantity,
+                        unit: this.newItem.unit
+                    };
+                    
+                    this.products.push(newProduct);
+                    this.saveProducts();
+                    
+                    this.newItem.name = '';
+                    this.newItem.quantity = 0.5;
+                    this.newItem.unit = 'kg';
+                    this.newItem.category = 'Vegetables';
+                    
+                    this.showCheckmark({ name: newProduct.name });
+                    this.showNotification('New item added successfully');
+                },
+                
+                editItem(product) {
+                    this.editingItem = { ...product };
+                },
+                
+                saveEditItem(productId) {
+                    if (!this.editingItem || !this.editingItem.name.trim()) {
+                        this.showNotification('Item name cannot be empty');
+                        return;
+                    }
+                    
+                    const index = this.products.findIndex(p => p.id === productId);
+                    if (index !== -1) {
+                        this.products[index] = { ...this.editingItem };
+                        this.saveProducts();
+                        this.showNotification('Item updated successfully');
+                        this.editingItem = null;
+                    }
+                },
+                
+                cancelEdit() {
+                    this.editingItem = null;
+                },
+                
+                deleteItem(index) {
+                    if (confirm('Are you sure you want to delete this item?')) {
+                        const productToDelete = this.filteredAdminProducts[index];
+                        const originalIndex = this.products.findIndex(p => p.id === productToDelete.id);
+                        
+                        if (originalIndex !== -1) {
+                            this.products.splice(originalIndex, 1);
+                            this.saveProducts();
+                            this.showNotification('Item deleted successfully');
+                        }
+                    }
+                },
+                
+                saveProducts() {
+                    localStorage.setItem('products', JSON.stringify(this.products));
+                },
+                
+                showNotification(message) {
+                    this.notification.message = message;
+                    this.notification.show = true;
+                    
+                    setTimeout(() => {
+                        this.notification.show = false;
+                    }, 3000);
+                },
+                
+                copyToClipboard() {
+                    if (this.basket.length === 0) {
+                        this.showNotification('Your basket is empty');
+                        return;
+                    }
+                    
+                    const text = this.basket.map(item => 
+                        `${item.name} - ${item.quantity} ${item.unit}`
+                    ).join('\n');
+                    
+                    navigator.clipboard.writeText(text).then(() => {
+                        this.showNotification('Basket copied to clipboard');
+                    }).catch(err => {
+                        console.error('Failed to copy: ', err);
+                        this.showNotification('Failed to copy basket');
+                    });
+                }
+            };
+        }
+        
+        function getInitialProducts() {
+            const storedProducts = localStorage.getItem('products');
+            
+            if (storedProducts) {
+                return JSON.parse(storedProducts);
+            }
+            
+            return [
+                { id: '1', name: 'Potato - Bangala Dumpa', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '2', name: 'Onion - Ullipaya', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '3', name: 'Carrot - Carrot', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '4', name: 'Beetroot - Beetroot', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '5', name: 'Radish - Mullangi', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '6', name: 'Sweet Potato - Chilakada Dumpa', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '7', name: 'Yam - Kanda', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '8', name: 'Kohlrabi - Navalkol', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '9', name: 'Cauliflower - Gobi Puvvu', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '10', name: 'Cabbage - Gos Koora', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '11', name: 'Broccoli - Broccoli', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '12', name: 'Asparagus - Asparagus', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '13', name: 'Celery - Celery', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '14', name: 'Green Peas - Batani', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '15', name: 'French Beans - French Beans', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '16', name: 'Cluster Beans - Gokarkaya', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '17', name: 'Okra - Bendakaya', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '18', name: 'Broad Beans - Chikudkaya', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '19', name: 'Tomato - Tomato', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '20', name: 'Cucumber - Dosakaya', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '21', name: 'Brinjal - Vankaya', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '22', name: 'Capsicum - Capsicum', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '23', name: 'Green Chilies - Pachimirapa', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '24', name: 'Bitter Gourd - Kakarakaya', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '25', name: 'Bottle Gourd - Anapakaya', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '26', name: 'Ivy Gourd - Dondakaya', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '27', name: 'Spiny Gourd - Akukura', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '28', name: 'Pumpkin - Gummadikaya', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '29', name: 'Drumstick - Mulakkada', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '30', name: 'Breadfruit - Breadfruit', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '31', name: 'Red Cabbage - Red Gos Koora', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '32', name: 'Zucchini - Zucchini', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '33', name: 'Mushrooms - Puttagodugulu', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '34', name: 'Baby Corn - Baby Corn', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '35', name: 'Spinach - Palakura', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '36', name: 'Fenugreek Leaves - Menthikoora', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '37', name: 'Coriander Leaves - Kothimeera', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '38', name: 'Mint Leaves - Pudina', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '39', name: 'Amaranth Leaves - Thotakura', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '40', name: 'Malabar Spinach - Bachali Koora', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '41', name: 'Sorrel Leaves - Gongura', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '42', name: 'Curry Leaves - Karivepaku', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '43', name: 'Lettuce - Lettuce', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '44', name: 'Arugula - Arugula', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '45', name: 'Kale - Kale', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '46', name: 'Pakchoi - Pakchoi', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '47', name: 'Swiss Chard - Swiss Chard', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '48', name: 'Microgreens - Microgreens', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '49', name: 'Drumstick Leaves - Mulakkada Aaku', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '50', name: 'Red Cabbage Leaves - Red Gos Koora Aaku', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '51', name: 'Watercress - Watercress', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
+                { id: '52', name: 'Mango - Mamidikaya', category: 'Fruits', quantity: 0.5, unit: 'kg' },
+                { id: '53', name: 'Banana - Aratikaya', category: 'Fruits', quantity: 0.5, unit: 'kg' },
+                { id: '54', name: 'Papaya - Boppayi', category: 'Fruits', quantity: 0.5, unit: 'kg' },
+                { id: '55', name: 'Guava - Jama', category: 'Fruits', quantity: 0.5, unit: 'kg' },
+                { id: '56', name: 'Pineapple - Pineapple', category: 'Fruits', quantity: 0.5, unit: 'kg' },
+                { id: '57', name: 'Jackfruit - Panasa', category: 'Fruits', quantity: 0.5, unit: 'kg' },
+                { id: '58', name: 'Custard Apple - Sitaphalam', category: 'Fruits', quantity: 0.5, unit: 'kg' },
+                { id: '59', name: 'Sapota - Sapota', category: 'Fruits', quantity: 0.5, unit: 'kg' },
+                { id: '60', name: 'Orange - Kamala Pandu', category: 'Fruits', quantity: 0.5, unit: 'kg' },
+                { id: '61', name: 'Sweet Lime - Battayi', category: 'Fruits', quantity: 0.5, unit: 'kg' },
+                { id: '62', name: 'Lemon - Nimma Pandu', category: 'Fruits', quantity: 0.5, unit: 'kg' },
+                { id: '63', name: 'Grapefruit - Grapefruit', category: 'Fruits', quantity: 0.5, unit: 'kg' },
+                { id: '64', name: 'Indian Gooseberry - Usirikaya', category: 'Fruits', quantity: 0.5, unit: 'kg' },
+                { id: '65', name: 'Pomegranate - Danimma', category: 'Fruits', quantity: 0.5, unit: 'kg' },
+                { id: '66', name: 'Grapes - Draksha', category: 'Fruits', quantity: 0.5, unit: 'kg' },
+                { id: '67', name: 'Strawberries - Strawberry', category: 'Fruits', quantity: 0.5, unit: 'kg' },
+                { id: '68', name: 'Blueberries - Blueberry', category: 'Fruits', quantity: 0.5, unit: 'kg' },
+                { id: '69', name: 'Cherries - Cherry', category: 'Fruits', quantity: 0.5, unit: 'kg' },
+                { id: '70', name: 'Peach - Peach', category: 'Fruits', quantity: 0.5, unit: 'kg' },
+                { id: '71', name: 'Plum - Plum', category: 'Fruits', quantity: 0.5, unit: 'kg' },
+                { id: '72', name: 'Apricot - Apricot', category: 'Fruits', quantity: 0.5, unit: 'kg' },
+                { id: '73', name: 'Apple - Apple', category: 'Fruits', quantity: 0.5, unit: 'kg' },
+                { id: '74', name: 'Pear - Pear', category: 'Fruits', quantity: 0.5, unit: 'kg' },
+                { id: '75', name: 'Watermelon - Puchakaya', category: 'Fruits', quantity: 0.5, unit: 'kg' },
+                { id: '76', name: 'Muskmelon - Kharbuja', category: 'Fruits', quantity: 0.5, unit: 'kg' },
+                { id: '77', name: 'Dragon Fruit - Dragon Fruit', category: 'Fruits', quantity: 0.5, unit: 'kg' },
+                { id: '78', name: 'Kiwi - Kiwi', category: 'Fruits', quantity: 0.5, unit: 'kg' },
+                { id: '79', name: 'Avocado - Avocado', category: 'Fruits', quantity: 0.5, unit: 'kg' },
+                { id: '80', name: 'Lychee - Lychee', category: 'Fruits', quantity: 0.5, unit: 'kg' },
+                { id: '81', name: 'Wheat Flour - Maida Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
+                { id: '82', name: 'Whole Wheat Flour - Goduma Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
+                { id: '83', name: 'Semolina - Rawa', category: 'Flours', quantity: 0.5, unit: 'kg' },
+                { id: '84', name: 'Rice Flour - Biyyam Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
+                { id: '85', name: 'Idli Semolina - Idli Rawa', category: 'Flours', quantity: 0.5, unit: 'kg' },
+                { id: '86', name: 'Besan (Chickpea Flour) - Senaga Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
+                { id: '87', name: 'Corn Flour - Mokkajonna Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
+                { id: '88', name: 'Millet Flour - Jonnalu Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
+                { id: '89', name: 'Finger Millet Flour - Ragi Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
+                { id: '90', name: 'Pearl Millet Flour - Sajja Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
+                { id: '91', name: 'Foxtail Millet Flour - Korra Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
+                { id: '92', name: 'Barnyard Millet Flour - Udalu Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
+                { id: '93', name: 'Kodo Millet Flour - Arikalu Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
+                { id: '94', name: 'Sorghum Flour - Jonna Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
+                { id: '95', name: 'Oat Flour - Oats Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
+                { id: '96', name: 'Almond Flour - Badam Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
+                { id: '97', name: 'Multigrain Flour - Multi Goduma Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
+                { id: '98', name: 'Sattu Flour - Sattu Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
+                { id: '99', name: 'Black Gram Flour - Minapa Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
+                { id: '100', name: 'Green Gram Flour - Pesara Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
+                { id: '101', name: 'Tapioca Flour - Marachena Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
+                { id: '102', name: 'Arrowroot Flour - Arrowroot Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
+                { id: '103', name: 'Rice - Biyyam', category: 'Cereals', quantity: 0.5, unit: 'kg' },
+                { id: '104', name: 'Basmati Rice - Basmati Biyyam', category: 'Cereals', quantity: 0.5, unit: 'kg' },
+                { id: '105', name: 'Brown Rice - Brown Biyyam', category: 'Cereals', quantity: 0.5, unit: 'kg' },
+                { id: '106', name: 'Red Rice - Erra Biyyam', category: 'Cereals', quantity: 0.5, unit: 'kg' },
+                { id: '107', name: 'Wheat - Goduma', category: 'Cereals', quantity: 0.5, unit: 'kg' },
+                { id: '108', name: 'Broken Wheat - Goduma Rawa', category: 'Cereals', quantity: 0.5, unit: 'kg' },
+                { id: '109', name: 'Oats - Oats', category: 'Cereals', quantity: 0.5, unit: 'kg' },
+                { id: '110', name: 'Corn - Mokkajonna', category: 'Cereals', quantity: 0.5, unit: 'kg' },
+                { id: '111', name: 'Barley - Barli', category: 'Cereals', quantity: 0.5, unit: 'kg' },
+                { id: '112', name: 'Quinoa - Quinoa', category: 'Cereals', quantity: 0.5, unit: 'kg' },
+                { id: '113', name: 'Foxtail Millet - Korra Biyyam', category: 'Cereals', quantity: 0.5, unit: 'kg' },
+                { id: '114', name: 'Finger Millet - Ragi', category: 'Cereals', quantity: 0.5, unit: 'kg' },
+                { id: '115', name: 'Pearl Millet - Sajja', category: 'Cereals', quantity: 0.5, unit: 'kg' },
+                { id: '116', name: 'Barnyard Millet - Udalu', category: 'Cereals', quantity: 0.5, unit: 'kg' },
+                { id: '117', name: 'Kodo Millet - Arikalu', category: 'Cereals', quantity: 0.5, unit: 'kg' },
+                { id: '118', name: 'Sorghum - Jonna', category: 'Cereals', quantity: 0.5, unit: 'kg' },
+                { id: '119', name: 'Poha (Flattened Rice) - Atukulu', category: 'Cereals', quantity: 0.5, unit: 'kg' },
+                { id: '120', name: 'Murmura (Puffed Rice) - Maramaralu', category: 'Cereals', quantity: 0.5, unit: 'kg' },
+                { id: '121', name: 'Sago - Saggubiyyam', category: 'Cereals', quantity: 0.5, unit: 'kg' },
+                { id: '122', name: 'Vermicelli - Semiya', category: 'Cereals', quantity: 0.5, unit: 'kg' },
+                { id: '123', name: 'Toor Dal - Kandi Pappu', category: 'Dals', quantity: 0.5, unit: 'kg' },
+                { id: '124', name: 'Urad Dal - Minapa Pappu', category: 'Dals', quantity: 0.5, unit: 'kg' },
+                { id: '125', name: 'Moong Dal - Pesara Pappu', category: 'Dals', quantity: 0.5, unit: 'kg' },
+                { id: '126', name: 'Chana Dal - Senaga Pappu', category: 'Dals', quantity: 0.5, unit: 'kg' },
+                { id: '127', name: 'Masoor Dal - Masoor Pappu', category: 'Dals', quantity: 0.5, unit: 'kg' },
+                { id: '128', name: 'Green Gram (Whole) - Pacha Pesalu', category: 'Dals', quantity: 0.5, unit: 'kg' },
+                { id: '129', name: 'Black Gram (Whole) - Nalla Minapappu', category: 'Dals', quantity: 0.5, unit: 'kg' },
+                { id: '130', name: 'Bengal Gram (Whole) - Senagalu', category: 'Dals', quantity: 0.5, unit: 'kg' },
+                { id: '131', name: 'Red Kidney Beans - Rajma', category: 'Dals', quantity: 0.5, unit: 'kg' },
+                { id: '132', name: 'Black-Eyed Peas - Alasandalu', category: 'Dals', quantity: 0.5, unit: 'kg' },
+                { id: '133', name: 'Horse Gram - Ulavalu', category: 'Dals', quantity: 0.5, unit: 'kg' },
+                { id: '134', name: 'Field Beans - Anumulu', category: 'Dals', quantity: 0.5, unit: 'kg' },
+                { id: '135', name: 'Moth Beans - Anapaginjala Pappu', category: 'Dals', quantity: 0.5, unit: 'kg' },
+                { id: '136', name: 'Split Green Peas - Batani Pappu', category: 'Dals', quantity: 0.5, unit: 'kg' },
+                { id: '137', name: 'Roasted Gram - Putnala Pappu', category: 'Dals', quantity: 0.5, unit: 'kg' },
+                { id: '138', name: 'Sunflower Refined Oil - Fortune Sunlite', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
+                { id: '139', name: 'Groundnut Oil - Vijaya', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
+                { id: '140', name: 'Mustard Oil - Emami Healthy & Tasty Kachchi Ghani', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
+                { id: '141', name: 'Rice Bran Oil - Bunge Pro', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
+                { id: '142', name: 'Coconut Oil - Parachute', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
+                { id: '143', name: 'Sesame Oil - Idhayam Gingelly Oil', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
+                { id: '144', name: 'Soyabean Oil - Dhara', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
+                { id: '145', name: 'Palm Oil - Ruchi Gold', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
+                { id: '146', name: 'Dishwashing Bar Soap - Vim Bar', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
+                { id: '147', name: 'Laundry Bar Soap - Rin Bar', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
+                { id: '148', name: 'Laundry Bar Soap - Nirma Bath', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
+                { id: '149', name: 'Bathing Soap - Lux', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
+                { id: '150', name: 'Bathing Soap - Santoor Sandal & Turmeric', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
+                { id: '151', name: 'Bathing Soap - Cinthol Original', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
+                { id: '152', name: 'Bathing Soap - Lifebuoy', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
+                { id: '153', name: 'Bathing Soap - Dettol Original', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
+                { id: '154', name: 'Bathing Soap - Medimix Ayurvedic', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
+                { id: '155', name: 'Bathing Soap - Patanjali Kanti Neem', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
+                { id: '156', name: 'Bathing Soap - Margo Neem', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
+                { id: '157', name: 'Washing Powder - Nirma', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
+                { id: '158', name: 'Washing Powder - Wheel Active', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
+                { id: '159', name: 'Washing Powder - Ghadi', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
+                { id: '160', name: 'Washing Powder - Rin Advanced', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
+                { id: '161', name: 'Washing Powder - Fena Superwash', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
+                { id: '162', name: 'Washing Powder - Patanjali Herbal Wash', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
+                { id: '163', name: 'Washing Powder - Woosh', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
+                { id: '164', name: 'Detergent Bar - Rin Bar', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
+                { id: '165', name: 'Detergent Bar - Nirma Super', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
+                { id: '166', name: 'Detergent Bar - Wheel Green', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
+                { id: '167', name: 'Toothpaste - Colgate', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
+                { id: '168', name: 'Toothpaste - Dabur Red', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
+                { id: '169', name: 'Toothpaste - Patanjali Dant Kanti', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
+                { id: '170', name: 'Toothpaste - Meswak', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
+                { id: '171', name: 'Toothpaste - Vicco Vajradanti', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
+                { id: '172', name: 'Toothbrush - Colgate ZigZag', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
+                { id: '173', name: 'Toothbrush - Oral-B', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
+                { id: '174', name: 'Tea Powder - Tata Tea Premium', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
+                { id: '175', name: 'Tea Powder - Red Label', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
+                { id: '176', name: 'Tea Powder - Taj Mahal', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
+                { id: '177', name: 'Tea Powder - Brooke Bond 3 Roses', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
+                { id: '178', name: 'Tea Powder - Patanjali Divya Peya', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
+                { id: '179', name: 'Tea Powder - Girnar Royal', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
+                { id: '180', name: 'Tea Powder - AVT Premium', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
+                { id: '181', name: 'Coffee Powder - Bru Instant', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
+                { id: '182', name: 'Coffee Powder - Narasus', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
+                { id: '183', name: 'Coffee Powder - Leo Coffee', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
+                { id: '184', name: 'Coffee Powder - Sunrise Instant', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
+                { id: '185', name: 'Coffee Powder - Continental Malgudi', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
+                { id: '186', name: 'Coffee Powder - Tata Coffee Grand', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
+                { id: '187', name: 'Dishwashing Liquid - Vim Liquid', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
+                { id: '188', name: 'Dishwashing Bar - Exo Anti-Bacterial', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
+                { id: '189', name: 'Dishwashing Liquid - Pril Active', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
+                { id: '190', name: 'Floor Cleaner - Lizol', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
+                { id: '191', name: 'Toilet Cleaner - Harpic', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
+                { id: '192', name: 'Fabric Whitener - Ujala Supreme', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
+                { id: '193', name: 'Fabric Softener - Comfort After Wash', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
+                { id: '194', name: 'Handwash - Savlon', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
+                { id: '195', name: 'Mosquito Repellent - Good Knight Liquid', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
+                { id: '196', name: 'Mosquito Repellent - All Out', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
+                { id: '197', name: 'Air Freshener - Godrej Aer', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
+                { id: '198', name: 'Glass Cleaner - Colin', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
+                { id: '199', name: 'Scrub Pad - Scotch-Brite', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
+                { id: '200', name: 'Steel Wool - Gala', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
+                { id: '201', name: 'Broom - Gala No Dust', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' }
+            ];
+        }
+
+        function getBasketFromStorage() {
+            const storedBasket = localStorage.getItem('basket');
+            return storedBasket ? JSON.parse(storedBasket) : [];
+        }
+    </script>
+</body>
+</html>
