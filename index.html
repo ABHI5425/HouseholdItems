@@ -292,7 +292,7 @@
     </style>
 </head>
 
-<body class="bg-gray-50 min-h-screen" x-data="storeApp()" x-init="init()">
+<body class="bg-gray-50 min-h-screen" x-data="storeApp" x-init="init()">
     <!-- Notification -->
     <div 
         x-show="notification.show" 
@@ -833,8 +833,8 @@
         </footer>
     </div>
 
-    <script>
-        function storeApp() {
+    <script defer>
+        window.storeApp = function() {
             return {
                 // App state
                 activePage: 'home',
