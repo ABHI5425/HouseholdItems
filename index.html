@@ -1168,7 +1168,7 @@ window.storeApp = function() {
                 const registration = await navigator.serviceWorker.ready;
                 const subscription = await registration.pushManager.subscribe({
                     userVisibleOnly: true,
-                    applicationServerKey: urlBase64ToUint8Array('YOUR_VAPID_PUBLIC_KEY') // Replace with your VAPID public key
+                    applicationServerKey: urlBase64ToUint8Array('BMe00t6FlyzsRTcr2x9aH0Dcr1g-6Q112UR7ALl0GeA9qhupQL3i23fjIZX_7e3E50K--g8tgc6XLYrFpVWo8Bc') // Replace with your VAPID public key
                 });
                 await this.savePushSubscription(subscription);
             } catch (error) {
