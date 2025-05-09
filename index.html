@@ -292,7 +292,7 @@
     </style>
 </head>
 
-<body class="bg-gray-50 min-h-screen" x-data="storeApp()" x-init="ensureHomePage()">
+<body class="bg-gray-50 min-h-screen" x-data="storeApp()" x-init="init()">
     <!-- Notification -->
     <div 
         x-show="notification.show" 
@@ -863,7 +863,7 @@
                     'Household Essentials'
                 ],
                 
-                products: getInitialProducts(),
+                products: [],
                 basket: getBasketFromStorage(),
                 
                 newItem: {
@@ -1091,219 +1091,31 @@
                     });
                 }
             };
+            init() {
+            getInitialProducts().then(fetched => {
+            this.products = fetched;
+            });
+            }
+        }
+
         }
         
-        function getInitialProducts() {
-            const storedProducts = localStorage.getItem('products');
-            
-            if (storedProducts) {
-                return JSON.parse(storedProducts);
-            }
-            
-            return [
-                { id: '1', name: 'Potato - Bangala Dumpa', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '2', name: 'Onion - Ullipaya', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '3', name: 'Carrot - Carrot', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '4', name: 'Beetroot - Beetroot', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '5', name: 'Radish - Mullangi', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '6', name: 'Sweet Potato - Chilakada Dumpa', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '7', name: 'Yam - Kanda', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '8', name: 'Kohlrabi - Navalkol', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '9', name: 'Cauliflower - Gobi Puvvu', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '10', name: 'Cabbage - Gos Koora', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '11', name: 'Broccoli - Broccoli', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '12', name: 'Asparagus - Asparagus', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '13', name: 'Celery - Celery', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '14', name: 'Green Peas - Batani', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '15', name: 'French Beans - French Beans', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '16', name: 'Cluster Beans - Gokarkaya', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '17', name: 'Okra - Bendakaya', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '18', name: 'Broad Beans - Chikudkaya', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '19', name: 'Tomato - Tomato', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '20', name: 'Cucumber - Dosakaya', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '21', name: 'Brinjal - Vankaya', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '22', name: 'Capsicum - Capsicum', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '23', name: 'Green Chilies - Pachimirapa', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '24', name: 'Bitter Gourd - Kakarakaya', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '25', name: 'Bottle Gourd - Anapakaya', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '26', name: 'Ivy Gourd - Dondakaya', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '27', name: 'Spiny Gourd - Akukura', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '28', name: 'Pumpkin - Gummadikaya', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '29', name: 'Drumstick - Mulakkada', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '30', name: 'Breadfruit - Breadfruit', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '31', name: 'Red Cabbage - Red Gos Koora', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '32', name: 'Zucchini - Zucchini', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '33', name: 'Mushrooms - Puttagodugulu', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '34', name: 'Baby Corn - Baby Corn', category: 'Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '35', name: 'Spinach - Palakura', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '36', name: 'Fenugreek Leaves - Menthikoora', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '37', name: 'Coriander Leaves - Kothimeera', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '38', name: 'Mint Leaves - Pudina', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '39', name: 'Amaranth Leaves - Thotakura', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '40', name: 'Malabar Spinach - Bachali Koora', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '41', name: 'Sorrel Leaves - Gongura', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '42', name: 'Curry Leaves - Karivepaku', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '43', name: 'Lettuce - Lettuce', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '44', name: 'Arugula - Arugula', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '45', name: 'Kale - Kale', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '46', name: 'Pakchoi - Pakchoi', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '47', name: 'Swiss Chard - Swiss Chard', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '48', name: 'Microgreens - Microgreens', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '49', name: 'Drumstick Leaves - Mulakkada Aaku', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '50', name: 'Red Cabbage Leaves - Red Gos Koora Aaku', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '51', name: 'Watercress - Watercress', category: 'Green Leafy Vegetables', quantity: 0.5, unit: 'kg' },
-                { id: '52', name: 'Mango - Mamidikaya', category: 'Fruits', quantity: 0.5, unit: 'kg' },
-                { id: '53', name: 'Banana - Aratikaya', category: 'Fruits', quantity: 0.5, unit: 'kg' },
-                { id: '54', name: 'Papaya - Boppayi', category: 'Fruits', quantity: 0.5, unit: 'kg' },
-                { id: '55', name: 'Guava - Jama', category: 'Fruits', quantity: 0.5, unit: 'kg' },
-                { id: '56', name: 'Pineapple - Pineapple', category: 'Fruits', quantity: 0.5, unit: 'kg' },
-                { id: '57', name: 'Jackfruit - Panasa', category: 'Fruits', quantity: 0.5, unit: 'kg' },
-                { id: '58', name: 'Custard Apple - Sitaphalam', category: 'Fruits', quantity: 0.5, unit: 'kg' },
-                { id: '59', name: 'Sapota - Sapota', category: 'Fruits', quantity: 0.5, unit: 'kg' },
-                { id: '60', name: 'Orange - Kamala Pandu', category: 'Fruits', quantity: 0.5, unit: 'kg' },
-                { id: '61', name: 'Sweet Lime - Battayi', category: 'Fruits', quantity: 0.5, unit: 'kg' },
-                { id: '62', name: 'Lemon - Nimma Pandu', category: 'Fruits', quantity: 0.5, unit: 'kg' },
-                { id: '63', name: 'Grapefruit - Grapefruit', category: 'Fruits', quantity: 0.5, unit: 'kg' },
-                { id: '64', name: 'Indian Gooseberry - Usirikaya', category: 'Fruits', quantity: 0.5, unit: 'kg' },
-                { id: '65', name: 'Pomegranate - Danimma', category: 'Fruits', quantity: 0.5, unit: 'kg' },
-                { id: '66', name: 'Grapes - Draksha', category: 'Fruits', quantity: 0.5, unit: 'kg' },
-                { id: '67', name: 'Strawberries - Strawberry', category: 'Fruits', quantity: 0.5, unit: 'kg' },
-                { id: '68', name: 'Blueberries - Blueberry', category: 'Fruits', quantity: 0.5, unit: 'kg' },
-                { id: '69', name: 'Cherries - Cherry', category: 'Fruits', quantity: 0.5, unit: 'kg' },
-                { id: '70', name: 'Peach - Peach', category: 'Fruits', quantity: 0.5, unit: 'kg' },
-                { id: '71', name: 'Plum - Plum', category: 'Fruits', quantity: 0.5, unit: 'kg' },
-                { id: '72', name: 'Apricot - Apricot', category: 'Fruits', quantity: 0.5, unit: 'kg' },
-                { id: '73', name: 'Apple - Apple', category: 'Fruits', quantity: 0.5, unit: 'kg' },
-                { id: '74', name: 'Pear - Pear', category: 'Fruits', quantity: 0.5, unit: 'kg' },
-                { id: '75', name: 'Watermelon - Puchakaya', category: 'Fruits', quantity: 0.5, unit: 'kg' },
-                { id: '76', name: 'Muskmelon - Kharbuja', category: 'Fruits', quantity: 0.5, unit: 'kg' },
-                { id: '77', name: 'Dragon Fruit - Dragon Fruit', category: 'Fruits', quantity: 0.5, unit: 'kg' },
-                { id: '78', name: 'Kiwi - Kiwi', category: 'Fruits', quantity: 0.5, unit: 'kg' },
-                { id: '79', name: 'Avocado - Avocado', category: 'Fruits', quantity: 0.5, unit: 'kg' },
-                { id: '80', name: 'Lychee - Lychee', category: 'Fruits', quantity: 0.5, unit: 'kg' },
-                { id: '81', name: 'Wheat Flour - Maida Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
-                { id: '82', name: 'Whole Wheat Flour - Goduma Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
-                { id: '83', name: 'Semolina - Rawa', category: 'Flours', quantity: 0.5, unit: 'kg' },
-                { id: '84', name: 'Rice Flour - Biyyam Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
-                { id: '85', name: 'Idli Semolina - Idli Rawa', category: 'Flours', quantity: 0.5, unit: 'kg' },
-                { id: '86', name: 'Besan (Chickpea Flour) - Senaga Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
-                { id: '87', name: 'Corn Flour - Mokkajonna Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
-                { id: '88', name: 'Millet Flour - Jonnalu Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
-                { id: '89', name: 'Finger Millet Flour - Ragi Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
-                { id: '90', name: 'Pearl Millet Flour - Sajja Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
-                { id: '91', name: 'Foxtail Millet Flour - Korra Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
-                { id: '92', name: 'Barnyard Millet Flour - Udalu Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
-                { id: '93', name: 'Kodo Millet Flour - Arikalu Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
-                { id: '94', name: 'Sorghum Flour - Jonna Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
-                { id: '95', name: 'Oat Flour - Oats Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
-                { id: '96', name: 'Almond Flour - Badam Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
-                { id: '97', name: 'Multigrain Flour - Multi Goduma Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
-                { id: '98', name: 'Sattu Flour - Sattu Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
-                { id: '99', name: 'Black Gram Flour - Minapa Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
-                { id: '100', name: 'Green Gram Flour - Pesara Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
-                { id: '101', name: 'Tapioca Flour - Marachena Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
-                { id: '102', name: 'Arrowroot Flour - Arrowroot Pindi', category: 'Flours', quantity: 0.5, unit: 'kg' },
-                { id: '103', name: 'Rice - Biyyam', category: 'Cereals', quantity: 0.5, unit: 'kg' },
-                { id: '104', name: 'Basmati Rice - Basmati Biyyam', category: 'Cereals', quantity: 0.5, unit: 'kg' },
-                { id: '105', name: 'Brown Rice - Brown Biyyam', category: 'Cereals', quantity: 0.5, unit: 'kg' },
-                { id: '106', name: 'Red Rice - Erra Biyyam', category: 'Cereals', quantity: 0.5, unit: 'kg' },
-                { id: '107', name: 'Wheat - Goduma', category: 'Cereals', quantity: 0.5, unit: 'kg' },
-                { id: '108', name: 'Broken Wheat - Goduma Rawa', category: 'Cereals', quantity: 0.5, unit: 'kg' },
-                { id: '109', name: 'Oats - Oats', category: 'Cereals', quantity: 0.5, unit: 'kg' },
-                { id: '110', name: 'Corn - Mokkajonna', category: 'Cereals', quantity: 0.5, unit: 'kg' },
-                { id: '111', name: 'Barley - Barli', category: 'Cereals', quantity: 0.5, unit: 'kg' },
-                { id: '112', name: 'Quinoa - Quinoa', category: 'Cereals', quantity: 0.5, unit: 'kg' },
-                { id: '113', name: 'Foxtail Millet - Korra Biyyam', category: 'Cereals', quantity: 0.5, unit: 'kg' },
-                { id: '114', name: 'Finger Millet - Ragi', category: 'Cereals', quantity: 0.5, unit: 'kg' },
-                { id: '115', name: 'Pearl Millet - Sajja', category: 'Cereals', quantity: 0.5, unit: 'kg' },
-                { id: '116', name: 'Barnyard Millet - Udalu', category: 'Cereals', quantity: 0.5, unit: 'kg' },
-                { id: '117', name: 'Kodo Millet - Arikalu', category: 'Cereals', quantity: 0.5, unit: 'kg' },
-                { id: '118', name: 'Sorghum - Jonna', category: 'Cereals', quantity: 0.5, unit: 'kg' },
-                { id: '119', name: 'Poha (Flattened Rice) - Atukulu', category: 'Cereals', quantity: 0.5, unit: 'kg' },
-                { id: '120', name: 'Murmura (Puffed Rice) - Maramaralu', category: 'Cereals', quantity: 0.5, unit: 'kg' },
-                { id: '121', name: 'Sago - Saggubiyyam', category: 'Cereals', quantity: 0.5, unit: 'kg' },
-                { id: '122', name: 'Vermicelli - Semiya', category: 'Cereals', quantity: 0.5, unit: 'kg' },
-                { id: '123', name: 'Toor Dal - Kandi Pappu', category: 'Dals', quantity: 0.5, unit: 'kg' },
-                { id: '124', name: 'Urad Dal - Minapa Pappu', category: 'Dals', quantity: 0.5, unit: 'kg' },
-                { id: '125', name: 'Moong Dal - Pesara Pappu', category: 'Dals', quantity: 0.5, unit: 'kg' },
-                { id: '126', name: 'Chana Dal - Senaga Pappu', category: 'Dals', quantity: 0.5, unit: 'kg' },
-                { id: '127', name: 'Masoor Dal - Masoor Pappu', category: 'Dals', quantity: 0.5, unit: 'kg' },
-                { id: '128', name: 'Green Gram (Whole) - Pacha Pesalu', category: 'Dals', quantity: 0.5, unit: 'kg' },
-                { id: '129', name: 'Black Gram (Whole) - Nalla Minapappu', category: 'Dals', quantity: 0.5, unit: 'kg' },
-                { id: '130', name: 'Bengal Gram (Whole) - Senagalu', category: 'Dals', quantity: 0.5, unit: 'kg' },
-                { id: '131', name: 'Red Kidney Beans - Rajma', category: 'Dals', quantity: 0.5, unit: 'kg' },
-                { id: '132', name: 'Black-Eyed Peas - Alasandalu', category: 'Dals', quantity: 0.5, unit: 'kg' },
-                { id: '133', name: 'Horse Gram - Ulavalu', category: 'Dals', quantity: 0.5, unit: 'kg' },
-                { id: '134', name: 'Field Beans - Anumulu', category: 'Dals', quantity: 0.5, unit: 'kg' },
-                { id: '135', name: 'Moth Beans - Anapaginjala Pappu', category: 'Dals', quantity: 0.5, unit: 'kg' },
-                { id: '136', name: 'Split Green Peas - Batani Pappu', category: 'Dals', quantity: 0.5, unit: 'kg' },
-                { id: '137', name: 'Roasted Gram - Putnala Pappu', category: 'Dals', quantity: 0.5, unit: 'kg' },
-                { id: '138', name: 'Sunflower Refined Oil - Fortune Sunlite', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
-                { id: '139', name: 'Groundnut Oil - Vijaya', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
-                { id: '140', name: 'Mustard Oil - Emami Healthy & Tasty Kachchi Ghani', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
-                { id: '141', name: 'Rice Bran Oil - Bunge Pro', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
-                { id: '142', name: 'Coconut Oil - Parachute', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
-                { id: '143', name: 'Sesame Oil - Idhayam Gingelly Oil', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
-                { id: '144', name: 'Soyabean Oil - Dhara', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
-                { id: '145', name: 'Palm Oil - Ruchi Gold', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
-                { id: '146', name: 'Dishwashing Bar Soap - Vim Bar', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
-                { id: '147', name: 'Laundry Bar Soap - Rin Bar', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
-                { id: '148', name: 'Laundry Bar Soap - Nirma Bath', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
-                { id: '149', name: 'Bathing Soap - Lux', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
-                { id: '150', name: 'Bathing Soap - Santoor Sandal & Turmeric', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
-                { id: '151', name: 'Bathing Soap - Cinthol Original', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
-                { id: '152', name: 'Bathing Soap - Lifebuoy', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
-                { id: '153', name: 'Bathing Soap - Dettol Original', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
-                { id: '154', name: 'Bathing Soap - Medimix Ayurvedic', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
-                { id: '155', name: 'Bathing Soap - Patanjali Kanti Neem', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
-                { id: '156', name: 'Bathing Soap - Margo Neem', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
-                { id: '157', name: 'Washing Powder - Nirma', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
-                { id: '158', name: 'Washing Powder - Wheel Active', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
-                { id: '159', name: 'Washing Powder - Ghadi', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
-                { id: '160', name: 'Washing Powder - Rin Advanced', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
-                { id: '161', name: 'Washing Powder - Fena Superwash', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
-                { id: '162', name: 'Washing Powder - Patanjali Herbal Wash', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
-                { id: '163', name: 'Washing Powder - Woosh', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
-                { id: '164', name: 'Detergent Bar - Rin Bar', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
-                { id: '165', name: 'Detergent Bar - Nirma Super', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
-                { id: '166', name: 'Detergent Bar - Wheel Green', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
-                { id: '167', name: 'Toothpaste - Colgate', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
-                { id: '168', name: 'Toothpaste - Dabur Red', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
-                { id: '169', name: 'Toothpaste - Patanjali Dant Kanti', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
-                { id: '170', name: 'Toothpaste - Meswak', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
-                { id: '171', name: 'Toothpaste - Vicco Vajradanti', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
-                { id: '172', name: 'Toothbrush - Colgate ZigZag', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
-                { id: '173', name: 'Toothbrush - Oral-B', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
-                { id: '174', name: 'Tea Powder - Tata Tea Premium', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
-                { id: '175', name: 'Tea Powder - Red Label', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
-                { id: '176', name: 'Tea Powder - Taj Mahal', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
-                { id: '177', name: 'Tea Powder - Brooke Bond 3 Roses', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
-                { id: '178', name: 'Tea Powder - Patanjali Divya Peya', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
-                { id: '179', name: 'Tea Powder - Girnar Royal', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
-                { id: '180', name: 'Tea Powder - AVT Premium', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
-                { id: '181', name: 'Coffee Powder - Bru Instant', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
-                { id: '182', name: 'Coffee Powder - Narasus', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
-                { id: '183', name: 'Coffee Powder - Leo Coffee', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
-                { id: '184', name: 'Coffee Powder - Sunrise Instant', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
-                { id: '185', name: 'Coffee Powder - Continental Malgudi', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
-                { id: '186', name: 'Coffee Powder - Tata Coffee Grand', category: 'Household Essentials', quantity: 0.5, unit: 'kg' },
-                { id: '187', name: 'Dishwashing Liquid - Vim Liquid', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
-                { id: '188', name: 'Dishwashing Bar - Exo Anti-Bacterial', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
-                { id: '189', name: 'Dishwashing Liquid - Pril Active', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
-                { id: '190', name: 'Floor Cleaner - Lizol', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
-                { id: '191', name: 'Toilet Cleaner - Harpic', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
-                { id: '192', name: 'Fabric Whitener - Ujala Supreme', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
-                { id: '193', name: 'Fabric Softener - Comfort After Wash', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
-                { id: '194', name: 'Handwash - Savlon', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
-                { id: '195', name: 'Mosquito Repellent - Good Knight Liquid', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
-                { id: '196', name: 'Mosquito Repellent - All Out', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
-                { id: '197', name: 'Air Freshener - Godrej Aer', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
-                { id: '198', name: 'Glass Cleaner - Colin', category: 'Household Essentials', quantity: 0.5, unit: 'ltr' },
-                { id: '199', name: 'Scrub Pad - Scotch-Brite', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
-                { id: '200', name: 'Steel Wool - Gala', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' },
-                { id: '201', name: 'Broom - Gala No Dust', category: 'Household Essentials', quantity: 0.5, unit: 'pcs' }
-            ];
-        }
+        async function getInitialProducts() {
+    try {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbzYVx4iHkf174H91fLkysYcgjrfnll9EkN3RV49zLQt9AwIboBqWjsjg_K67PiaoLsQDw/exec');
+        const data = await response.json();
+        return data.map(item => ({
+            id: item.id.toString(),
+            name: item.name,
+            category: item.category,
+            quantity: parseFloat(item.quantity),
+            unit: item.unit
+        }));
+    } catch (error) {
+        console.error('Error fetching Google Sheets data:', error);
+        return [];
+    }
+}
 
         function getBasketFromStorage() {
             const storedBasket = localStorage.getItem('basket');
