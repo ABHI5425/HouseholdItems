@@ -1002,11 +1002,17 @@ window.storeApp = function() {
             this.showNotification('Item removed from basket');
         },
         
-        clearBasket() {
-            this.basket = [];
-            this.updateBasket();
-            this.showNotification('Basket cleared');
-        },
+        async clearBasket() {
+    try {
+        await fetch('/api/basket', { method: 'DELETE' });
+        this.basket = [];
+        this.updateBasket();
+        this.showNotification('Basket cleared');
+    } catch (error) {
+        console.error('Clear basket failed:', error);
+        this.showNotification('Failed to clear basket');
+    }
+},
         
         incrementBasketItem(index) {
             this.basket[index].quantity = Math.round((parseFloat(this.basket[index].quantity) + 0.1) * 10) / 10;
