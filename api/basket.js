@@ -16,18 +16,38 @@ module.exports = async (req, res) => {
 
       const existingIndex = basketStore.findIndex(i => i.id === item.id);
       if (existingIndex !== -1) {
-        basketStore[existingIndex].quantity = Math.round((parseFloat(basketStore[existingIndex].quantity) + parseFloat(item.quantity)) * 10) / 10;
+        basketStore[existingIndex].quantity = Math.round(
+          (parseFloat(basketStore[existingIndex].quantity) + parseFloat(item.quantity)) * 10
+        ) / 10;
       } else {
         basketStore.push(item);
       }
 
-      
-      await notifySubscribers({ title: 'Basket Update', body: `${item.name} added to basket` });
+      await notifySubscribers({
+        title: 'Basket Update',
+        body: `${item.name} added to basket`
+      });
 
       return res.status(201).json({ message: 'Item added', basket: basketStore });
     } catch (error) {
       console.error('Basket add error:', error);
       return res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+
+  if (req.method === 'DELETE') {
+    try {
+      basketStore = [];
+
+      await notifySubscribers({
+        title: 'Basket Cleared',
+        body: 'The basket has been emptied.'
+      });
+
+      return res.status(200).json({ message: 'Basket cleared' });
+    } catch (error) {
+      console.error('Basket clear error:', error);
+      return res.status(500).json({ error: 'Failed to clear basket' });
     }
   }
 
