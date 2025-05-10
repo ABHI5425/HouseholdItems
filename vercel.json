@@ -1,7 +1,9 @@
-// /vercel.json
 {
   "rewrites": [
     { "source": "/api/:path*", "destination": "/api/:path*" },
     { "source": "/(.*)", "destination": "/index.html" }
-  ]
+  ],
+  "engines": {
+    "node": "20.x"
+  }
 }
