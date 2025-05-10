@@ -935,7 +935,25 @@ window.storeApp = function() {
                 quantity: product.quantity,
                 unit: product.unit
             };
-            
+                 try {
+                const response = await fetch('/api/basket', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(itemToAdd)
+                });
+        
+                if (!response.ok) throw new Error('Failed to add item');
+        
+                const data = await response.json();
+                this.basket = data.basket;
+                this.updateBasket();
+                this.showCheckmark(product);
+                this.showNotification(`${product.name} added to basket`);
+            } catch (error) {
+                console.error('Basket add error:', error);
+                this.showNotification('Failed to add to basket');
+            }
+        
             const existingItemIndex = this.basket.findIndex(item => item.id === itemToAdd.id);
             
             if (existingItemIndex !== -1) {
