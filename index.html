@@ -1080,81 +1080,90 @@ window.storeApp = function() {
         },
         
         async saveEditItem(productId) {
-            if (!this.editingItem || !this.editingItem.name.trim()) {
-                this.showNotification('Item name cannot be empty');
-                return;
-            }
-            
-            const index = this.products.findIndex(p => p.id === productId);
-            if (index !== -1) {
-                this.products[index] = { ...this.editingItem };
-                try {
-                    await this.saveToGoogleSheets('edit', this.editingItem);
-                    this.saveProducts();
-                    const fetched = await getInitialProducts();
-                    this.products = fetched;
-                    this.showNotification('Item updated successfully');
-                    this.editingItem = null;
-                } catch (error) {
-                    this.showNotification('Failed to update item in Google Sheets');
-                    console.error('Save edit error:', error);
-                }
-            }
-        },
-        
-        cancelEdit() {
-            this.editingItem = null;
-        },
-        
-        async deleteItem(index) {
-            if (confirm('Are you sure you want to delete this item?')) {
-                const productToDelete = this.filteredAdminProducts[index];
-                const originalIndex = this.products.findIndex(p => p.id === productToDelete.id);
-                
-                if (originalIndex !== -1) {
-                    this.products.splice(originalIndex, 1);
-                    try {
-                        await this.saveToGoogleSheets('delete', productToDelete);
-                        this.saveProducts();
-                        const fetched = await getInitialProducts();
-                        this.products = fetched;
-                        this.showNotification('Item deleted successfully');
-                    } catch (error) {
-                        this.showNotification('Failed to delete item from Google Sheets');
-                        console.error('Delete item error:', error);
-                    }
-                }
-            }
-        },
-        
-        saveProducts() {
-            localStorage.setItem('products', JSON.stringify(this.products));
-        },
-        
-        async saveToGoogleSheets(action, item) {
-            const response = await fetch('https://script.google.com/macros/s/AKfycbzYVx4iHkf174H91fLkysYcgjrfnll9EkN3RV49zLQt9AwIboBqWjsjg_K67PiaoLsQDw/exec', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ action, item }),
-                mode: 'cors'
-            });
-            
-            const result = await response.json();
-            if (result.status !== 'success') {
-                throw new Error(result.message || 'Failed to update Google Sheets');
-            }
-        },
-        
-        showNotification(message) {
-            this.notification.message = message;
-            this.notification.show = true;
-            
-            setTimeout(() => {
-                this.notification.show = false;
-            }, 3000);
-        },
+  if (!this.editingItem || !this.editingItem.name.trim()) {
+    this.showNotification('Item name cannot be empty');
+    return;
+  }
+
+  const index = this.products.findIndex(p => p.id === productId);
+  if (index !== -1) {
+    this.products[index] = { ...this.editingItem };
+    try {
+      await this.saveToGoogleSheets('edit', this.editingItem);
+      this.saveProducts();
+      const fetched = await getInitialProducts();
+      this.products = fetched;
+      this.showNotification('Item updated successfully');
+      this.editingItem = null;
+    } catch (error) {
+      this.showNotification('Failed to update item in Google Sheets');
+      console.error('Save edit error:', error);
+    }
+  }
+},
+
+cancelEdit() {
+  this.editingItem = null;
+},
+
+async deleteItem(index) {
+  if (confirm('Are you sure you want to delete this item?')) {
+    const productToDelete = this.filteredAdminProducts[index];
+    const originalIndex = this.products.findIndex(p => p.id === productToDelete.id);
+
+    if (originalIndex !== -1) {
+      this.products.splice(originalIndex, 1);
+      try {
+        await this.saveToGoogleSheets('delete', productToDelete);
+        this.saveProducts();
+        const fetched = await getInitialProducts();
+        this.products = fetched;
+        this.showNotification('Item deleted successfully');
+      } catch (error) {
+        this.showNotification('Failed to delete item from Google Sheets');
+        console.error('Delete item error:', error);
+      }
+    }
+  }
+},
+
+saveProducts() {
+  localStorage.setItem('products', JSON.stringify(this.products));
+},
+
+async saveToGoogleSheets(action, item) {
+  try {
+    const apiUrl = '/api/proxy'; // Use Vercel proxy endpoint
+    const headers = { 'Content-Type': 'application/json' };
+    console.log('Request headers:', headers);
+    console.log('Request body:', { action, item });
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ action, item }),
+      mode: 'cors'
+    });
+    console.log('Response status:', response.status, 'OK:', response.ok);
+    const result = await response.json();
+    console.log('Response data:', result);
+    if (result.status !== 'success') {
+      throw new Error(result.message || 'Failed to update Google Sheets');
+    }
+    return result;
+  } catch (error) {
+    console.error('saveToGoogleSheets error:', error);
+    throw error;
+  }
+},
+
+showNotification(message) {
+  this.notification.message = message;
+  this.notification.show = true;
+
+  setTimeout(() => {
+    this.notification.show = false;
+  }, 3000);
+},
         
         copyToClipboard() {
             if (this.basket.length === 0) {
