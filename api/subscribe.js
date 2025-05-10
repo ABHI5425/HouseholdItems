@@ -1,8 +1,6 @@
-export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method Not Allowed' });
-  }
+const subscriptions = [];
 
+module.exports = (req, res) => {
   try {
     const subscription = req.body;
 
@@ -10,12 +8,13 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Invalid subscription object' });
     }
 
-    // If you had a DB or Sheets integration, you'd save it here
-    console.log('New push subscription:', subscription.endpoint);
+    // For now, we just push to in-memory array
+    subscriptions.push(subscription);
+    console.log('New push subscription saved:', subscription.endpoint);
 
     return res.status(201).json({ message: 'Subscription saved successfully' });
-  } catch (err) {
-    console.error('Error saving subscription:', err);
+  } catch (error) {
+    console.error('Error saving subscription:', error);
     return res.status(500).json({ error: 'Failed to save subscription' });
   }
-}
+};
