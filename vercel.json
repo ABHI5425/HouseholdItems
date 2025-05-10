@@ -10,9 +10,6 @@
       "destination": "/index.html"
     }
   ],
-  "engines": {
-    "node": "20.x"
-  },
   "functions": {
     "api/*.js": {
       "memory": 128,
