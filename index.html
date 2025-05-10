@@ -1170,6 +1170,9 @@ window.storeApp = function() {
                     userVisibleOnly: true,
                     applicationServerKey: urlBase64ToUint8Array('BMe00t6FlyzsRTcr2x9aH0Dcr1g-6Q112UR7ALl0GeA9qhupQL3i23fjIZX_7e3E50K--g8tgc6XLYrFpVWo8Bc') // Replace with your VAPID public key
                 });
+                if (!subscription || !subscription.endpoint) {
+                throw new Error('Invalid push subscription object');
+                }
                 await this.savePushSubscription(subscription);
             } catch (error) {
                 console.error('Push subscription failed:', error);
@@ -1184,7 +1187,10 @@ window.storeApp = function() {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(subscription)
                 });
-                if (!response.ok) throw new Error('Failed to save subscription');
+                if (!response.ok) {
+                const msg = await response.text();
+                throw new Error(`Failed to save subscription: ${msg}`);
+                }
                 console.log('Push subscription saved');
             } catch (error) {
                 console.error('Save subscription error:', error);
