@@ -1,15 +1,22 @@
 {
   "version": 2,
-  "builds": [
+  "rewrites": [
     {
-      "src": "**/*",
-      "use": "@vercel/static"
+      "source": "/api/:path*",
+      "destination": "/api/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
+  "engines": {
+    "node": "20.x"
+  },
+  "functions": {
+    "api/*.js": {
+      "memory": 128,
+      "maxDuration": 10
     }
-  ]
+  }
 }
