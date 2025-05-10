@@ -6,8 +6,8 @@ module.exports = (req, res) => {
       return res.status(400).json({ error: 'Invalid subscription object' });
     }
 
-    // In a real app, you'd store this in a DB
-    console.log('Received new subscription:', subscription);
+    add(subscription);
+    console.log('New push subscription saved:', subscription.endpoint);
 
     res.status(201).json({ message: 'Subscription saved successfully' });
   } catch (error) {
