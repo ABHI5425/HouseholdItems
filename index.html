@@ -1236,6 +1236,19 @@ window.storeApp = function() {
                 this.products = fetched;
             });
             
+            // Fetch shared basket from server
+            fetch('/api/basket')
+                .then(res => res.json())
+                .then(data => {
+                    this.basket = data.items || [];
+                    this.updateBasket();
+                })
+                .catch(err => {
+                    console.error('Failed to fetch basket:', err);
+                    this.basket = getBasketFromStorage(); // fallback to local
+                    this.updateBasket();
+                });
+            
             // Request notification permission
             this.requestNotificationPermission();
         }
