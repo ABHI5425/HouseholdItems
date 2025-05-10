@@ -9,7 +9,7 @@ app.use(express.json());
 let subscriptions = [];
 
 webPush.setVapidDetails(
-  'mailto:your-email@example.com',
+  'mailto:loiuythnfhser@mailinator.com',
   process.env.VAPID_PUBLIC_KEY,
   process.env.VAPID_PRIVATE_KEY
 );
