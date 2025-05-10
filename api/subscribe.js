@@ -1,12 +1,17 @@
-const express = require('express');
-const app = express();
-
-app.use(express.json());
-
-let subscriptions = [];
-
 module.exports = (req, res) => {
-  const subscription = req.body;
-  subscriptions.push(subscription);
-  res.status(201).json({ status: 'success' });
+  try {
+    const subscription = req.body;
+
+    if (!subscription || !subscription.endpoint) {
+      return res.status(400).json({ error: 'Invalid subscription object' });
+    }
+
+    // In a real app, you'd store this in a DB
+    console.log('Received new subscription:', subscription);
+
+    res.status(201).json({ message: 'Subscription saved successfully' });
+  } catch (error) {
+    console.error('Error saving subscription:', error);
+    res.status(500).json({ error: 'Failed to save subscription' });
+  }
 };
