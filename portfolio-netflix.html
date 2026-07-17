@@ -154,6 +154,51 @@ main{position:relative;z-index:2;padding:2rem 0 4rem}
 .circlebtn.play:hover{background:#ddd}
 .moretext{font-size:.72rem;color:var(--dim);align-self:center;letter-spacing:.03em}
 
+/* top-10 ranked wins */
+.rail.rankrail{grid-auto-columns:minmax(240px,1fr)}
+.ranktile{position:relative;height:155px;border-radius:5px;background:var(--bg3);border:1px solid #232323;display:flex;align-items:flex-end;
+  padding:1.1rem 1.1rem 1.1rem 3rem;opacity:0;transform:translateY(30px);
+  transition:opacity .7s ease,transform .7s ease,border-color .3s;overflow:hidden}
+.ranktile.in{opacity:1;transform:none}
+.ranktile:hover{border-color:var(--red);transform:translateY(-5px);box-shadow:0 14px 30px rgba(0,0,0,.5)}
+.ranktile .num{position:absolute;left:-.35rem;bottom:-1.1rem;font-size:6.6rem;font-weight:900;color:transparent;
+  -webkit-text-stroke:2px #3a3a3a;line-height:1;transition:.3s ease;pointer-events:none}
+.ranktile:hover .num{-webkit-text-stroke:2px var(--red)}
+.ranktile .win{position:relative;z-index:2;font-size:.9rem;color:#e6e6e6;line-height:1.45}
+.ranktile .win b{color:var(--green)}
+
+/* because-you-watched recommendation tiles */
+.wtile{position:relative;border-radius:5px;background:var(--bg3);border:1px solid #232323;padding:1.3rem;height:150px;
+  display:flex;flex-direction:column;justify-content:space-between;opacity:0;transform:translateY(30px);
+  transition:opacity .7s ease,transform .7s ease,border-color .3s}
+.wtile.in{opacity:1;transform:none}
+.wtile:hover{border-color:var(--red);transform:translateY(-5px);box-shadow:0 14px 30px rgba(0,0,0,.5)}
+.wtile .wl{font-size:.64rem;color:var(--dim2);letter-spacing:.15em;text-transform:uppercase}
+.wtile h4{font-size:1.05rem;font-weight:700;margin-top:.35rem;line-height:1.3}
+.wtile a{color:#fff;text-decoration:none}
+.wtile a:hover{color:var(--red)}
+.wtile .wmatch{font-size:.72rem;color:var(--green);font-weight:700}
+
+/* "starring" cast line on episode guide */
+.cast{margin-top:1.1rem;padding-top:.9rem;border-top:1px dashed #262626;font-size:.85rem;color:var(--dim2)}
+.cast b{color:var(--dim);font-weight:600}
+
+/* are-you-still-watching idle modal */
+#idleModal{position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .5s ease}
+#idleModal.show{opacity:1;pointer-events:auto}
+.idle-box{text-align:center;max-width:440px;padding:2rem}
+.idle-box .qmark{width:70px;height:70px;border-radius:50%;border:3px solid var(--dim2);display:flex;align-items:center;justify-content:center;
+  font-size:2rem;margin:0 auto 1.4rem;color:var(--dim)}
+.idle-box h3{font-size:1.4rem;font-weight:700;margin-bottom:.7rem}
+.idle-box p{color:var(--dim);margin-bottom:1.8rem;line-height:1.6}
+.idle-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.idle-btns button{padding:.8rem 1.8rem;border-radius:4px;font-weight:700;cursor:pointer;font-size:.95rem;transition:.2s}
+.idle-continue{background:#fff;color:#000;border:none}
+.idle-continue:hover{background:#ddd}
+.idle-exit{background:transparent;color:var(--dim);border:1px solid var(--dim2)}
+.idle-exit:hover{color:#fff;border-color:#fff}
+
 /* skill chip tiles */
 .rail.chips{grid-auto-columns:minmax(200px,1fr)}
 .chip{position:relative;border-radius:5px;overflow:hidden;background:var(--bg3);height:120px;padding:1.1rem;display:flex;flex-direction:column;
@@ -217,12 +262,12 @@ footer .fmeta a{color:var(--dim2);text-decoration:none}
 footer .fmeta a:hover{color:#fff;text-decoration:underline}
 
 @media print{
-  #introN,#nav,.chev,#particles,.blob,.scrubber,footer .subs,.overlay,.top10,.btns{display:none!important}
+  #introN,#nav,.chev,#particles,.blob,.scrubber,footer .subs,.overlay,.top10,.btns,#idleModal{display:none!important}
   body{background:#fff;color:#000}
   header.billboard{min-height:auto;color:#000}
   h1.title,.desc,.meta,.genres{opacity:1!important;transform:none!important;text-shadow:none;color:#000}
-  .gentry li,.ghead .gdate{color:#222}
-  section,.sect,.tile,.chip{opacity:1!important;transform:none!important}
+  .gentry li,.ghead .gdate,.cast{color:#222}
+  section,.sect,.tile,.chip,.ranktile,.wtile{opacity:1!important;transform:none!important}
 }
 </style>
 </head>
@@ -262,7 +307,7 @@ footer .fmeta a:hover{color:#fff;text-decoration:underline}
     <div class="tag">A B H I F L I X &nbsp;ORIGINAL SERIES</div>
     <h1 class="title">ABHISHEK TOPARAPU<span class="sub">Senior Product Manager · AI Products · Agentic AI</span></h1>
     <div class="meta">
-      <span class="match">98% Match</span><span>2017–Present</span><span class="badge">PM</span>
+      <span class="match">98% Match</span><span>2017–Present</span><span class="badge" title="Maturity Rating">TV-PM</span>
       <span>4 Roles</span><span class="badge">HD</span><span>9+ Yrs Experience</span>
     </div>
     <div class="genres">
@@ -299,7 +344,7 @@ footer .fmeta a:hover{color:#fff;text-decoration:underline}
         <article class="tile" data-target="guide-verizon">
           <div class="tile-inner">
             <div class="art verizon"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="14" width="3" height="8"/><rect x="8" y="10" width="3" height="12"/><rect x="14" y="6" width="3" height="16"/><rect x="20" y="2" width="3" height="20"/></svg><span class="mark-letter">V</span></div>
-            <span class="ep">EP. 04</span>
+            <span class="ep">EP. 04 · NEW</span>
             <span class="status live"><span class="dot"></span>CURRENT ROLE</span>
             <div class="tbody"><h3>Sr. Engineer Consultant — Tech PM</h3><div class="co">Verizon</div><div class="dr">2025 – Present · Hyderabad</div></div>
             <div class="overlay">
@@ -373,6 +418,23 @@ footer .fmeta a:hover{color:#fff;text-decoration:underline}
     </div>
   </section>
 
+  <!-- ================= TOP 10 WINS ================= -->
+  <section class="rowsec sect" id="top10row">
+    <div class="rowhead"><h2>Top 10 Wins in Product Management Today</h2><span class="hint">Ranked by Impact</span></div>
+    <div class="rail-wrap">
+      <button class="chev left">‹</button>
+      <div class="rail rankrail">
+        <div class="ranktile"><span class="num">1</span><div class="win">Cut Verizon's daily support tickets from <b>~45,000 to 30,000</b> with Agentic AI</div></div>
+        <div class="ranktile"><span class="num">2</span><div class="win">Reduced sportsbook integration time by <b>25%</b> across Altenar, Sportradar &amp; Pragmatic Play</div></div>
+        <div class="ranktile"><span class="num">3</span><div class="win">Lifted operational efficiency <b>30%</b> and cut support queries <b>15%</b></div></div>
+        <div class="ranktile"><span class="num">4</span><div class="win">Boosted user engagement <b>15%</b> and retention <b>10%</b> via new promotions</div></div>
+        <div class="ranktile"><span class="num">5</span><div class="win">Improved roadmap effectiveness <b>20%</b> with data-driven prioritization</div></div>
+        <div class="ranktile"><span class="num">6</span><div class="win">Raised deadline adherence <b>35%</b> across quarterly milestones</div></div>
+      </div>
+      <button class="chev right">›</button>
+    </div>
+  </section>
+
   <!-- ================= FULL SERIES GUIDE ================= -->
   <section class="sect" id="guide">
     <div class="guide-head">
@@ -394,6 +456,7 @@ footer .fmeta a:hover{color:#fff;text-decoration:underline}
           <li>Conducted stakeholder workshops to identify automation opportunities and prioritize AI-driven product enhancements.</li>
           <li>Managed product backlogs, user stories, prioritization, sprint planning, and release execution across cross-functional teams.</li>
         </ul>
+        <div class="cast"><b>Starring:</b> AI Engineering, Data Science, Architecture &amp; Operations Teams</div>
       </div>
     </div>
 
@@ -408,6 +471,7 @@ footer .fmeta a:hover{color:#fff;text-decoration:underline}
           <li>Owned Agile product lifecycle management, sprint planning, backlog management, demos, and retrospectives.</li>
           <li>Launched promotions and bonus features increasing engagement by 15% and retention by 10%.</li>
         </ul>
+        <div class="cast"><b>Starring:</b> Altenar · Sportradar · Pragmatic Play</div>
       </div>
     </div>
 
@@ -420,6 +484,7 @@ footer .fmeta a:hover{color:#fff;text-decoration:underline}
           <li>Implemented data-driven prioritization frameworks improving roadmap effectiveness by 20%.</li>
           <li>Aligned stakeholder priorities and quarterly milestones, improving deadline adherence by 35%.</li>
         </ul>
+        <div class="cast"><b>Starring:</b> Client Stakeholders across Africa &amp; Europe</div>
       </div>
     </div>
 
@@ -432,6 +497,7 @@ footer .fmeta a:hover{color:#fff;text-decoration:underline}
           <li>Worked on projects involving Disney, WWE, and Gordon Ramsay brands.</li>
           <li>Led UAT activities improving product quality and reducing post-launch issues.</li>
         </ul>
+        <div class="cast"><b>Starring:</b> Disney · WWE · Gordon Ramsay Brand Teams</div>
       </div>
     </div>
   </section>
@@ -480,6 +546,37 @@ footer .fmeta a:hover{color:#fff;text-decoration:underline}
     </div>
   </section>
 
+  <!-- ================= BECAUSE YOU WATCHED ================= -->
+  <section class="rowsec sect" id="watched">
+    <div class="rowhead"><h2>Because You Watched &ldquo;Great Hires&rdquo;</h2><span class="hint">Recommended For You</span></div>
+    <div class="rail-wrap">
+      <button class="chev left">‹</button>
+      <div class="rail" style="grid-auto-columns:minmax(220px,1fr)">
+        <article class="wtile" onclick="location.href='mailto:abhishekt993@gmail.com'">
+          <div class="wl">Get In Touch</div>
+          <h4><a href="mailto:abhishekt993@gmail.com" onclick="event.stopPropagation()">abhishekt993@gmail.com</a></h4>
+          <span class="wmatch">99% Match</span>
+        </article>
+        <article class="wtile">
+          <div class="wl">Now Streaming From</div>
+          <h4>Hyderabad, India</h4>
+          <span class="wmatch">Open to Remote &amp; Relocation</span>
+        </article>
+        <article class="wtile" onclick="window.open('https://linkedin.com/in/t-abhishek','_blank')">
+          <div class="wl">Connect</div>
+          <h4><a href="https://linkedin.com/in/t-abhishek" target="_blank" rel="noopener" onclick="event.stopPropagation()">linkedin.com/in/t-abhishek</a></h4>
+          <span class="wmatch">97% Match</span>
+        </article>
+        <article class="wtile">
+          <div class="wl">Behind The Scenes</div>
+          <h4>9+ Yrs · 4 Companies · 1 Great Hire</h4>
+          <span class="wmatch">Coming to a Team Near You</span>
+        </article>
+      </div>
+      <button class="chev right">›</button>
+    </div>
+  </section>
+
   <!-- ================= CONTACT ================= -->
   <section id="contact" class="sect">
     <div class="kick">Season Finale</div>
@@ -505,6 +602,18 @@ footer .fmeta a:hover{color:#fff;text-decoration:underline}
   </div>
   © 2026 Abhishek Toparapu · ABHIFLIX Original Production · Hyderabad, India
 </footer>
+
+<div id="idleModal">
+  <div class="idle-box">
+    <div class="qmark">?</div>
+    <h3>Are you still watching this profile?</h3>
+    <p>Great hires don't wait around. Keep exploring the career, or skip straight to the good part.</p>
+    <div class="idle-btns">
+      <button class="idle-continue" id="idleContinue">▶ Continue Watching</button>
+      <button class="idle-exit" id="idleExit">✕ Skip to Contact</button>
+    </div>
+  </div>
+</div>
 
 <script>
 /* ---------- data for skill chip rows ---------- */
@@ -563,7 +672,7 @@ addEventListener('scroll',()=>{ nav.classList.toggle('solid', scrollY>40); });
 const io = new IntersectionObserver(es=>es.forEach(e=>{
   if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
 }),{threshold:.15});
-document.querySelectorAll('.sect,.tile,.chip').forEach((el,i)=>{
+document.querySelectorAll('.sect,.tile,.chip,.ranktile,.wtile').forEach((el,i)=>{
   el.style.transitionDelay = (i%6*0.07)+'s';
   io.observe(el);
 });
@@ -611,6 +720,24 @@ document.querySelectorAll('.tile[data-target]').forEach(tile=>{
 });
 document.querySelectorAll('.tile [title="More Info"]').forEach(btn=>{
   btn.addEventListener('click', e=>{ e.stopPropagation(); btn.closest('.tile').click(); });
+});
+
+/* ---------- "Are you still watching?" idle check-in ---------- */
+let lastActive = Date.now();
+['mousemove','scroll','keydown','click','touchstart'].forEach(ev=>
+  addEventListener(ev, ()=>{ lastActive = Date.now(); }, {passive:true}));
+const idleModal = document.getElementById('idleModal');
+let idleShown = false;
+setInterval(()=>{
+  if(!introDone || idleShown) return;
+  if(Date.now() - lastActive > 55000){ idleModal.classList.add('show'); idleShown = true; }
+}, 3000);
+document.getElementById('idleContinue').addEventListener('click', ()=>{
+  idleModal.classList.remove('show'); idleShown = false; lastActive = Date.now();
+});
+document.getElementById('idleExit').addEventListener('click', ()=>{
+  idleModal.classList.remove('show'); idleShown = false; lastActive = Date.now();
+  document.getElementById('contact').scrollIntoView({behavior:'smooth'});
 });
 </script>
 </body>
