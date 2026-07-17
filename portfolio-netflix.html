@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ABHIFLIX — Abhishek Toparapu</title>
+<style>
+:root{--red:#e50914;--bg:#141414;--ink:#fff;--dim:#b3b3b3}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:'Helvetica Neue',Arial,sans-serif;overflow-x:hidden}
+/* intro: big letter zoom like the N ident */
+#intro{position:fixed;inset:0;background:#000;z-index:99;display:flex;align-items:center;justify-content:center;animation:introOut .8s ease 3.2s forwards}
+#intro .A{font-size:24vw;font-weight:900;color:var(--red);text-shadow:0 0 60px rgba(229,9,20,.8);
+  animation:zoomA 2.6s cubic-bezier(.65,0,.35,1) forwards}
+@keyframes zoomA{0%{transform:scale(.5);opacity:0}25%{opacity:1}70%{transform:scale(1)}100%{transform:scale(28);opacity:0}}
+@keyframes introOut{to{opacity:0;visibility:hidden}}
+/* hero billboard */
+.billboard{position:relative;min-height:92vh;display:flex;flex-direction:column;justify-content:center;padding:0 5vw;
+  background:linear-gradient(77deg,rgba(0,0,0,.85) 25%,transparent 85%),
+  radial-gradient(120% 100% at 80% 20%,#3a0d10 0%,#141414 60%)}
+.billboard::after{content:"";position:absolute;left:0;right:0;bottom:0;height:14vh;background:linear-gradient(180deg,transparent,var(--bg))}
+.tag{color:var(--red);font-weight:700;letter-spacing:.35em;font-size:.8rem;margin-bottom:1rem;animation:fade 1s ease 3.4s backwards}
+h1{font-size:clamp(2.6rem,7vw,5.5rem);font-weight:900;line-height:1;animation:fade 1s ease 3.6s backwards}
+.meta{display:flex;gap:1rem;margin:1.2rem 0;color:var(--dim);font-size:.9rem;align-items:center;animation:fade 1s ease 3.8s backwards}
+.match{color:#46d369;font-weight:700}
+.badge{border:1px solid var(--dim);padding:0 .4rem;font-size:.7rem}
+.desc{max-width:56ch;color:#ddd;line-height:1.7;animation:fade 1s ease 4s backwards}
+.btns{display:flex;gap:1rem;margin-top:2rem;animation:fade 1s ease 4.2s backwards}
+.btn{display:inline-flex;align-items:center;gap:.6rem;padding:.8rem 1.8rem;border:none;border-radius:4px;font-size:1.05rem;font-weight:700;cursor:pointer;text-decoration:none;transition:.2s}
+.play{background:#fff;color:#000}.play:hover{background:#ddd}
+.info{background:rgba(109,109,110,.7);color:#fff}.info:hover{background:rgba(109,109,110,.5)}
+@keyframes fade{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+/* rows */
+.rows{padding:2rem 5vw 6rem}
+.row h2{font-size:1.3rem;font-weight:700;margin:2.6rem 0 1rem}
+.rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(230px,1fr);gap:.6rem;overflow-x:auto;padding-bottom:.8rem;scrollbar-width:thin}
+.tile{position:relative;aspect-ratio:16/9;border-radius:4px;overflow:hidden;background:linear-gradient(135deg,#2a2a2a,#1a1a1a);
+  display:flex;flex-direction:column;justify-content:flex-end;padding:1rem;transition:transform .35s ease,box-shadow .35s;cursor:pointer;
+  opacity:0;transform:translateY(30px)}
+.tile.in{opacity:1;transform:none;transition:opacity .8s ease,transform .8s ease}
+.tile:hover{transform:scale(1.08);z-index:3;box-shadow:0 10px 40px rgba(0,0,0,.8)}
+.tile::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,.9))}
+.tile .n{position:absolute;top:.5rem;left:.7rem;color:var(--red);font-weight:900;font-size:1.2rem}
+.tile h3{position:relative;font-size:1rem;font-weight:700}
+.tile p{position:relative;color:var(--dim);font-size:.78rem;line-height:1.5;margin-top:.3rem}
+.tile.top{background:linear-gradient(135deg,#3a0d10,#1a1a1a)}
+.rank{position:absolute;left:.4rem;bottom:-.8rem;font-size:5rem;font-weight:900;-webkit-text-stroke:2px #888;color:transparent;opacity:.9}
+.tile.top h3,.tile.top p{margin-left:3.4rem}
+footer{text-align:center;color:#666;font-size:.75rem;padding:3rem;border-top:1px solid #232323}
+footer a{color:var(--dim)}
+</style>
+</head>
+<body>
+<div id="intro"><div class="A">A</div></div>
+
+<header class="billboard">
+  <div class="tag">A B H I F L I X &nbsp; ORIGINAL SERIES</div>
+  <h1>ABHISHEK<br>TOPARAPU</h1>
+  <div class="meta"><span class="match">98% Match</span><span>2024–Present</span><span class="badge">PO</span><span>1 Season</span><span class="badge">HD</span></div>
+  <p class="desc">A relentless Product Owner navigates backlogs, stakeholders and sprint deadlines in this
+  binge-worthy career drama. Critics call it “compelling from standup to retro.”</p>
+  <div class="btns">
+    <a class="btn play" href="mailto:experienceabhi@gmail.com">▶ Hire Now</a>
+    <a class="btn info" href="#rows">ⓘ More Info</a>
+  </div>
+</header>
+
+<main class="rows" id="rows">
+  <div class="row"><h2>Career: Season 1</h2>
+    <div class="rail">
+      <div class="tile top"><span class="rank">1</span><span class="n">A</span><h3>Product Owner — TechMojo</h3><p>Jan 2024 – Jun 2025 · Owned the backlog, aligned business &amp; engineering, shipped releases.</p></div>
+      <div class="tile top"><span class="rank">2</span><span class="n">A</span><h3>The Discovery Phase</h3><p>Turning ambiguous requirements into a prioritized roadmap.</p></div>
+      <div class="tile top"><span class="rank">3</span><span class="n">A</span><h3>Release Day</h3><p>The season finale nobody wanted to miss — coordinated, tested, shipped.</p></div>
+      <div class="tile top"><span class="rank">4</span><span class="n">A</span><h3>Coming Soon: Next Role</h3><p>Now casting — a product team that loves discovery and data.</p></div>
+    </div>
+  </div>
+  <div class="row"><h2>Skills — Trending Now</h2>
+    <div class="rail">
+      <div class="tile"><span class="n">A</span><h3>Backlog Management</h3><p>User stories, grooming, prioritization.</p></div>
+      <div class="tile"><span class="n">A</span><h3>Agile / Scrum</h3><p>Sprints, ceremonies, velocity without the drama.</p></div>
+      <div class="tile"><span class="n">A</span><h3>Stakeholder Alignment</h3><p>A gripping thriller of expectations, managed.</p></div>
+      <div class="tile"><span class="n">A</span><h3>Product Discovery</h3><p>Research, insight, roadmap. Rated E for Empathy.</p></div>
+    </div>
+  </div>
+  <div class="row"><h2>Because You Watched “Great Hires”</h2>
+    <div class="rail">
+      <div class="tile"><span class="n">A</span><h3>Contact</h3><p>experienceabhi@gmail.com — replies faster than autoplay.</p></div>
+      <div class="tile"><span class="n">A</span><h3>Location</h3><p>Hyderabad, India · Open to remote.</p></div>
+      <div class="tile"><span class="n">A</span><h3>Add Your Projects</h3><p>// placeholder — drop real projects here.</p></div>
+    </div>
+  </div>
+</main>
+<footer>© 2026 Abhishek Toparapu · <a href="mailto:experienceabhi@gmail.com">experienceabhi@gmail.com</a></footer>
+<script>
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.2});
+document.querySelectorAll('.tile').forEach((t,i)=>{t.style.transitionDelay=(i%4*0.12)+'s';io.observe(t)});
+</script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Abhishek Toparapu — A Product Saga</title>
+<style>
+:root{--gold:#ffe81f;--bg:#000}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
+#stars{position:fixed;inset:0;z-index:0}
+/* blue prologue */
+#prologue{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;background:#000;
+  animation:gone 1s ease 4.5s forwards}
+#prologue p{color:#4bd5ee;font-size:clamp(1.2rem,3.5vw,2rem);font-style:italic;opacity:0;animation:blueIn 4s ease .3s forwards}
+@keyframes blueIn{10%{opacity:1}80%{opacity:1}100%{opacity:0}}
+@keyframes gone{to{opacity:0;visibility:hidden}}
+/* title + crawl */
+#logo{position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;pointer-events:none}
+#logo span{color:var(--gold);font-weight:900;letter-spacing:.05em;text-align:center;line-height:.9;
+  font-size:16vw;opacity:0;animation:logoZoom 7s cubic-bezier(.22,1,.36,1) 4.8s forwards}
+@keyframes logoZoom{0%{opacity:0;transform:scale(1.6)}5%{opacity:1}100%{opacity:0;transform:scale(.05)}}
+#crawlWrap{position:relative;z-index:10;height:100vh;overflow:hidden;perspective:400px;perspective-origin:50% 100%}
+#crawl{position:absolute;left:50%;bottom:0;width:min(80vw,700px);transform-origin:50% 100%;
+  transform:translateX(-50%) rotateX(58deg) translateY(100%);
+  animation:crawl 55s linear 11s forwards;color:var(--gold);text-align:justify}
+#crawl h2{text-align:center;font-size:2.6rem;margin-bottom:2rem}
+#crawl .ep{text-align:center;font-size:1.6rem;letter-spacing:.3em;margin-bottom:.8rem}
+#crawl p{font-size:1.7rem;line-height:1.75;margin-bottom:1.8rem;font-weight:700}
+@keyframes crawl{to{transform:translateX(-50%) rotateX(58deg) translateY(-170%)}}
+#skip{position:fixed;right:1.2rem;bottom:1.2rem;z-index:60;background:none;border:1px solid var(--gold);color:var(--gold);
+  padding:.6rem 1.4rem;letter-spacing:.25em;font-size:.7rem;cursor:pointer;text-transform:uppercase}
+#skip:hover{background:var(--gold);color:#000}
+/* main content */
+main{position:relative;z-index:10;display:none;max-width:1000px;margin:0 auto;padding:12vh 6vw}
+main.show{display:block}
+.sect{margin-bottom:14vh;opacity:0;transform:translateY(50px);transition:1s ease}
+.sect.in{opacity:1;transform:none}
+.kicker{color:var(--gold);letter-spacing:.5em;text-transform:uppercase;font-size:.75rem;margin-bottom:1rem}
+h1{color:var(--gold);font-size:clamp(2.4rem,7vw,5rem);font-weight:900;line-height:1}
+h3{color:var(--gold);font-size:1.4rem;margin-bottom:.4rem}
+.sect p{color:#cfcfcf;line-height:1.8;max-width:60ch;margin-top:1rem}
+.saber{height:6px;border-radius:6px;margin:2rem 0;width:0;transition:width 1.4s cubic-bezier(.77,0,.18,1);
+  background:#fff;box-shadow:0 0 12px #4bd5ee,0 0 30px #4bd5ee,0 0 60px #4bd5ee}
+.sect.in .saber{width:100%}
+.saber.green{box-shadow:0 0 12px #7bff6a,0 0 30px #7bff6a,0 0 60px #7bff6a}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1rem;margin-top:1.5rem}
+.holo{border:1px solid rgba(75,213,238,.4);padding:1.4rem;background:rgba(75,213,238,.05);position:relative}
+.holo::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(75,213,238,.06) 3px 4px);pointer-events:none}
+.holo h4{color:#4bd5ee;letter-spacing:.15em;text-transform:uppercase;font-size:.8rem;margin-bottom:.6rem}
+.holo p{font-size:.9rem;margin:0}
+a.force{color:#000;background:var(--gold);padding:.9rem 2.2rem;text-decoration:none;font-weight:900;letter-spacing:.2em;display:inline-block;margin-top:1.6rem}
+a.force:hover{box-shadow:0 0 30px rgba(255,232,31,.6)}
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+<div id="prologue"><p>A long time ago in a sprint far, far away….</p></div>
+<div id="logo"><span>ABHISHEK<br>TOPARAPU</span></div>
+
+<div id="crawlWrap">
+  <div id="crawl">
+    <div class="ep">EPISODE IV</div>
+    <h2>A NEW ROLE</h2>
+    <p>It is a period of rapid delivery. ABHISHEK TOPARAPU, Product Owner of the TechMojo alliance, has spent eighteen months restoring order to a rebellious backlog.</p>
+    <p>Armed only with user stories and a burndown chart, he brokered peace between the Business Council and the Engineering Fleet, shipping release after release across the galaxy.</p>
+    <p>Now, his mission complete, he journeys toward a new frontier — in search of a product team bold enough to chase discovery, data, and the perfect sprint….</p>
+  </div>
+</div>
+<button id="skip">Skip to Portfolio ▸</button>
+
+<main id="main">
+  <section class="sect"><div class="kicker">The Saga</div><h1>ABHISHEK TOPARAPU</h1>
+    <div class="saber"></div>
+    <p>Product Owner · Hyderabad, India · Bringing balance to the backlog.</p></section>
+  <section class="sect"><div class="kicker">Episode Guide — Experience</div>
+    <h3>Product Owner · TechMojo Solutions Pvt. Ltd.</h3>
+    <p>Jan 2024 – Jun 2025 — Owned requirements end-to-end, aligned stakeholders and engineering, and guided releases through fast sprint cycles.</p>
+    <div class="saber green"></div>
+    <h3>The Next Episode</h3>
+    <p>Open to new missions. <em>// add earlier roles &amp; education here</em></p></section>
+  <section class="sect"><div class="kicker">The Force — Skills</div>
+    <div class="grid">
+      <div class="holo"><h4>Product Ownership</h4><p>Backlogs, stories, prioritization.</p></div>
+      <div class="holo"><h4>Agile &amp; Scrum</h4><p>Do or do not ship. There is no try.</p></div>
+      <div class="holo"><h4>Discovery</h4><p>Sensing what users feel before they say it.</p></div>
+      <div class="holo"><h4>Alignment</h4><p>Diplomacy between fleets of stakeholders.</p></div>
+    </div></section>
+  <section class="sect"><div class="kicker">Transmission</div>
+    <h3>Send a message via hyperspace</h3>
+    <a class="force" href="mailto:experienceabhi@gmail.com">experienceabhi@gmail.com</a></section>
+</main>
+<script>
+/* starfield */
+const c=document.getElementById('stars'),x=c.getContext('2d');let W,H,S=[];
+function sz(){W=c.width=innerWidth;H=c.height=innerHeight;S=Array.from({length:220},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.3+.2,a:Math.random()}))}
+sz();addEventListener('resize',sz);
+(function d(t){x.fillStyle='#000';x.fillRect(0,0,W,H);
+for(const s of S){x.globalAlpha=.3+.7*Math.abs(Math.sin(t/1000+s.a*6));x.fillStyle='#fff';x.beginPath();x.arc(s.x,s.y,s.r,0,7);x.fill()}
+x.globalAlpha=1;requestAnimationFrame(d)})(0);
+/* skip / end of crawl -> show main */
+function showMain(){document.getElementById('crawlWrap').style.display='none';
+  document.getElementById('logo').style.display='none';
+  document.getElementById('prologue').style.display='none';
+  document.getElementById('skip').style.display='none';
+  const m=document.getElementById('main');m.classList.add('show');
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.2});
+  document.querySelectorAll('.sect').forEach(s=>io.observe(s));window.scrollTo(0,0);}
+document.getElementById('skip').addEventListener('click',showMain);
+setTimeout(showMain,68000);
+</script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Abhishek Toparapu — The Product Matrix</title>
+<style>
+:root{--grn:#00ff41;--dgrn:#0a3d16}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;color:var(--grn);font-family:'Courier New',monospace;overflow-x:hidden}
+#rain{position:fixed;inset:0;z-index:0;opacity:.9}
+.wrap{position:relative;z-index:2;max-width:900px;margin:0 auto;padding:10vh 6vw}
+/* terminal boot */
+#boot{min-height:90vh;display:flex;flex-direction:column;justify-content:center}
+#term{font-size:clamp(.95rem,2.4vw,1.25rem);line-height:2;white-space:pre-wrap;text-shadow:0 0 8px rgba(0,255,65,.7)}
+.cursor{display:inline-block;width:.6em;height:1.1em;background:var(--grn);vertical-align:text-bottom;animation:blink .7s step-end infinite}
+@keyframes blink{50%{opacity:0}}
+#pill{margin-top:2.5rem;display:none;gap:1.5rem}
+#pill.show{display:flex}
+.pillbtn{padding:.9rem 2rem;border-radius:999px;border:none;font-family:inherit;font-weight:700;cursor:pointer;letter-spacing:.15em;font-size:.85rem;transition:.3s}
+.red{background:#3d0a0a;color:#ff5252;border:1px solid #ff5252}
+.blue{background:#0a1a3d;color:#6ea8ff;border:1px solid #6ea8ff}
+.pillbtn:hover{transform:scale(1.07);box-shadow:0 0 25px currentColor}
+/* content */
+main{display:none}
+main.show{display:block}
+section{margin-bottom:12vh;opacity:0;transform:translateY(40px);transition:.9s ease}
+section.in{opacity:1;transform:none}
+h1{font-size:clamp(1.8rem,6vw,3.6rem);text-shadow:0 0 18px rgba(0,255,65,.8);letter-spacing:.05em}
+.glitch{position:relative;animation:glitch 3s infinite}
+@keyframes glitch{0%,93%,100%{text-shadow:0 0 18px rgba(0,255,65,.8)}94%{text-shadow:-3px 0 #ff5252,3px 0 #6ea8ff}96%{text-shadow:3px 0 #ff5252,-3px 0 #6ea8ff}}
+.prompt{color:#7dffa2;font-size:.8rem;letter-spacing:.2em;margin-bottom:1rem}
+.box{border:1px solid var(--dgrn);background:rgba(0,20,5,.75);padding:1.6rem;margin-top:1rem;box-shadow:0 0 30px rgba(0,255,65,.08) inset}
+.box h3{color:#baffcb;margin-bottom:.4rem}
+.box p{color:#7dcf8f;line-height:1.8;font-size:.95rem}
+.k{color:#fff}
+table{width:100%;border-collapse:collapse;margin-top:1rem;font-size:.9rem}
+td{border:1px solid var(--dgrn);padding:.7rem 1rem;color:#7dcf8f}
+td:first-child{color:#baffcb;width:40%}
+.bar{height:8px;background:var(--dgrn);position:relative;overflow:hidden}
+.bar i{position:absolute;inset:0;background:var(--grn);width:0;transition:width 1.6s cubic-bezier(.77,0,.18,1);box-shadow:0 0 12px var(--grn)}
+section.in .bar i{width:var(--w)}
+a.jack{display:inline-block;margin-top:1.4rem;color:#000;background:var(--grn);padding:.9rem 2rem;text-decoration:none;font-weight:700;letter-spacing:.2em}
+a.jack:hover{box-shadow:0 0 40px rgba(0,255,65,.8)}
+</style>
+</head>
+<body>
+<canvas id="rain"></canvas>
+<div class="wrap">
+  <div id="boot">
+    <div id="term"></div>
+    <div id="pill"><button class="pillbtn red" id="redpill">🔴 RED PILL — SEE THE PORTFOLIO</button>
+      <button class="pillbtn blue" onclick="location.reload()">🔵 BLUE PILL — WAKE UP</button></div>
+  </div>
+  <main id="main">
+    <section><div class="prompt">root@zion:~$ whoami</div>
+      <h1 class="glitch">ABHISHEK TOPARAPU</h1>
+      <div class="box"><p><span class="k">ROLE:</span> Product Owner &nbsp;|&nbsp; <span class="k">LOCATION:</span> Hyderabad, IN &nbsp;|&nbsp; <span class="k">STATUS:</span> The One (for your product team)</p></div></section>
+    <section><div class="prompt">root@zion:~$ cat /var/log/career.log</div>
+      <div class="box"><h3>[2024-01 → 2025-06] Product Owner @ TechMojo Solutions</h3>
+        <p>Owned the backlog end-to-end. Bent requirements — not spoons — into shippable releases.
+        Aligned business and engineering across fast sprint cycles.</p></div>
+      <div class="box"><h3>[NEXT] Awaiting instructions…</h3><p>// add earlier roles &amp; education here</p></div></section>
+    <section><div class="prompt">root@zion:~$ top -o skill</div>
+      <table>
+        <tr><td>product_ownership.exe</td><td><div class="bar"><i style="--w:95%"></i></div></td></tr>
+        <tr><td>agile_scrum.sys</td><td><div class="bar"><i style="--w:92%"></i></div></td></tr>
+        <tr><td>stakeholder_align.dll</td><td><div class="bar"><i style="--w:90%"></i></div></td></tr>
+        <tr><td>discovery_research.sh</td><td><div class="bar"><i style="--w:88%"></i></div></td></tr>
+      </table></section>
+    <section><div class="prompt">root@zion:~$ ./contact --secure</div>
+      <div class="box"><p>The Matrix has you… but the inbox is real.</p></div>
+      <a class="jack" href="mailto:experienceabhi@gmail.com">JACK IN → experienceabhi@gmail.com</a></section>
+  </main>
+</div>
+<script>
+/* digital rain */
+const c=document.getElementById('rain'),x=c.getContext('2d');
+let W,H,cols,drops,F=16;
+const glyphs='アイウエオカキクケコサシスセソ0123456789ABHISHEK<>/*+-';
+function sz(){W=c.width=innerWidth;H=c.height=innerHeight;cols=Math.floor(W/F);drops=Array.from({length:cols},()=>Math.random()*-H/F)}
+sz();addEventListener('resize',sz);
+setInterval(()=>{x.fillStyle='rgba(0,0,0,.06)';x.fillRect(0,0,W,H);
+x.font=F+'px monospace';
+for(let i=0;i<cols;i++){const ch=glyphs[Math.random()*glyphs.length|0];
+x.fillStyle=Math.random()>.975?'#d4ffe0':'#00ff41';
+x.fillText(ch,i*F,drops[i]*F);
+if(drops[i]*F>H&&Math.random()>.975)drops[i]=0;drops[i]++;}},50);
+/* boot typewriter */
+const lines=['> initializing product_matrix v2.6 …','> scanning candidate: TOPARAPU, ABHISHEK','> role detected: PRODUCT OWNER','> threat level to bad backlogs: MAXIMUM','','Wake up, recruiter…','The portfolio has you.','','Follow the white rabbit? 🐇'];
+const term=document.getElementById('term');let li=0,ci=0,buf='';
+function type(){if(li>=lines.length){term.innerHTML=buf+'<span class="cursor"></span>';document.getElementById('pill').classList.add('show');return}
+const L=lines[li];
+if(ci<=L.length){term.innerHTML=buf+L.slice(0,ci)+'<span class="cursor"></span>';ci++;setTimeout(type,26)}
+else{buf+=L+'\n';li++;ci=0;setTimeout(type,L===''?60:340)}}
+type();
+document.getElementById('redpill').addEventListener('click',()=>{
+  document.getElementById('boot').style.display='none';
+  const m=document.getElementById('main');m.classList.add('show');
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.2});
+  document.querySelectorAll('section').forEach(s=>io.observe(s));window.scrollTo(0,0);});
+</script>
+</body>
+</html>
